@@ -1,0 +1,97 @@
+app:
+  name: PaperWeave
+  environment: development
+  log_level: INFO
+  metrics_file: data/metadata/runtime_metrics.json
+
+paths:
+  data_dir: data
+  raw_pdfs_dir: data/raw_pdfs
+  parsed_text_dir: data/parsed_text
+  parsed_markdown_dir: data/parsed_markdown
+  jsonl_dir: data/jsonl
+  metadata_dir: data/metadata
+  eval_questions_dir: data/eval_questions
+  basic_rag_dir: data/basic_rag
+  benchmark_dir: benchmarks
+  evaluation_dir: evaluations
+  report_dir: reports
+  log_dir: logs
+
+providers:
+  llm:
+    provider: ollama
+    model: llama3.1:8b
+    base_url: http://localhost:11434
+    api_key_env: LLM_API_KEY
+    temperature: 0.1
+    max_tokens: 1024
+    pricing:
+      prompt_per_1k: 0.0
+      completion_per_1k: 0.0
+  embeddings:
+    provider: ollama
+    model: nomic-embed-text
+    base_url: http://localhost:11434
+    dimensions: 768
+  judge:
+    provider: gemini
+    model: gemini-2.5-flash
+    base_url: https://generativelanguage.googleapis.com
+    api_key_env: JUDGE_API_KEY
+
+dataset:
+  query: 'cat:cs.CL AND ("large language model" OR "LLM" OR "retrieval augmented generation" OR "GraphRAG" OR "hallucination" OR "transformer" OR "retrieval")'
+  max_results: 500
+  target_tokens: 2200000
+  min_tokens_per_paper: 1000
+  request_delay_seconds: 1.0
+  categories:
+    - LLM
+    - RAG
+    - GraphRAG
+    - hallucination detection
+    - transformers
+    - retrieval
+    - NLP
+
+chunking:
+  strategy: semantic
+  chunk_size: 1400
+  overlap: 200
+  semantic_threshold: 0.95
+
+retrieval:
+  basic_rag_top_k: 5
+  graphrag_top_k: 5
+  graphrag_num_hops: 2
+  graphrag_community_level: 2
+
+graphrag:
+  api_base: http://localhost:8000
+  graph_name: PaperWeave
+  chunker: semantic
+  extractor: llm
+  top_k: 5
+  num_hops: 2
+  community_level: 2
+  chunk_only: true
+  doc_only: false
+
+tigergraph:
+  hostname: http://localhost
+  restpp_port: 9000
+  gsql_port: 14240
+  username: tigergraph
+  password: tigergraph
+  graph_name: PaperWeave
+
+evaluation:
+  bertscore_model: microsoft/deberta-xlarge-mnli
+  judge_enabled: true
+  categories:
+    - lookup
+    - multi_hop_reasoning
+    - comparison
+    - summarization
+    - graph_traversal_reasoning

@@ -1,0 +1,113 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+pip-wheel-metadata/
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node / frontend
+node_modules/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Docker / local runtime noise
+*.pid
+*.pid.lock
+*.log
+logs/*
+!logs/.gitkeep
+
+# Local app state
+chats.db
+db.log
+requestLogs.jsonl
+requestLogs*.jsonl
+
+# Benchmarks / evaluation outputs
+benchmarks/*.json
+benchmarks/*.jsonl
+evaluations/*.json
+evaluations/*.jsonl
+reports/*.json
+reports/*.jsonl
+reports/*.csv
+reports/*.html
+
+# Generated data artifacts
+data/raw_pdfs/**
+!data/raw_pdfs/.gitkeep
+data/parsed_text/**
+!data/parsed_text/.gitkeep
+data/parsed_markdown/**
+!data/parsed_markdown/.gitkeep
+data/jsonl/**
+!data/jsonl/.gitkeep
+data/metadata/**
+!data/metadata/.gitkeep
+data/ingestion_temp/**
+!data/ingestion_temp/.gitkeep
+data/basic_rag/**
+!data/basic_rag/.gitkeep
+
+# Keep curated small assets committed
+!data/eval_questions/
+!data/eval_questions/**
+!data/README.md
+
+# Large binary/document artifacts anywhere under the repo dataset areas
+*.faiss
+*.pkl
+*.sqlite
+*.db-shm
+*.db-wal
+
+# TigerGraph / vendored upstream clone should not be committed from this repo
+graphrag/tigergraph-graphrag/
+
+# Codex / agent local metadata
+.agents/
+.codex/

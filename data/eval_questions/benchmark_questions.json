@@ -1,0 +1,32 @@
+[
+  {
+    "id": "q001",
+    "category": "lookup",
+    "question": "What is retrieval augmented generation?",
+    "reference_answer": "Retrieval augmented generation combines external retrieval with an LLM so the model answers using fetched supporting context rather than relying only on parametric memory."
+  },
+  {
+    "id": "q002",
+    "category": "lookup",
+    "question": "Which papers discuss hallucination detection?",
+    "reference_answer": "A strong answer should identify relevant hallucination-detection papers in the dataset and describe them accurately."
+  },
+  {
+    "id": "q003",
+    "category": "multi_hop_reasoning",
+    "question": "How did retrieval-augmented methods evolve into graph-based RAG for scientific question answering?",
+    "reference_answer": "A strong answer should connect dense retrieval, chunk-based RAG, entity extraction, relationship modeling, and multi-hop reasoning over linked evidence."
+  },
+  {
+    "id": "q004",
+    "category": "comparison",
+    "question": "Compare Basic RAG and GraphRAG for multi-hop reasoning over scientific papers.",
+    "reference_answer": "Basic RAG retrieves semantically similar chunks, while GraphRAG additionally reasons over entities and relationships to assemble more compact multi-hop evidence."
+  },
+  {
+    "id": "q005",
+    "category": "graph_traversal_reasoning",
+    "question": "Which papers, datasets, and methods connect retrieval augmentation with hallucination detection?",
+    "reference_answer": "A strong answer should identify linked papers, the datasets they use, and the methods connecting retrieval augmentation to hallucination detection."
+  }
+]

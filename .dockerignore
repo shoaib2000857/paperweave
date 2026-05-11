@@ -1,0 +1,16 @@
+.venv/
+frontend/node_modules/
+frontend/.next/
+__pycache__/
+.pytest_cache/
+.git/
+.codex/
+.agents/
+logs/
+reports/
+evaluations/
+notebooks/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store

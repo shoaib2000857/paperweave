@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import time
+from typing import Any
 
 import httpx
 
@@ -29,7 +30,7 @@ class GraphRAGPipeline(BasePipeline):
                 "top_k": top_k,
                 "num_hops": num_hops,
                 "num_seen_min": 1,
-                "indices": [],
+                "indices": ["DocumentChunk"],
                 "chunk_only": self.settings.graphrag.chunk_only,
                 "doc_only": self.settings.graphrag.doc_only,
                 "verbose": True,
@@ -77,21 +78,8 @@ class GraphRAGPipeline(BasePipeline):
                 message=f"GraphRAG service returned HTTP {exc.response.status_code}: {exc.response.text[:500]}",
             )
         retrieval_ms = (time.perf_counter() - retrieval_start) * 1000
-        answer = raw.get("natural_language_response", "")
-        query_sources = raw.get("query_sources", {}) or {}
-        source_payloads = query_sources.get("sources", []) if isinstance(query_sources, dict) else []
-        if not source_payloads and isinstance(query_sources, dict):
-            source_payloads = query_sources.get("chunks", []) or query_sources.get("documents", []) or []
-        sources = [
-            SourceRecord(
-                id=str(item.get("id", item.get("document_id", item.get("source", "graph-source")))),
-                title=item.get("title"),
-                snippet=item.get("text", item.get("snippet", str(item)[:600])),
-                score=item.get("score"),
-                metadata=item,
-            )
-            for item in source_payloads
-        ]
+        answer = raw.get("response") or raw.get("natural_language_response", "")
+        sources = self._extract_sources(raw)
         prompt_tokens = len(payload.question.split())
         completion_tokens = len(answer.split())
         generation_ms = max((time.perf_counter() - started) * 1000 - retrieval_ms, 0.0)
@@ -114,7 +102,10 @@ class GraphRAGPipeline(BasePipeline):
                 num_hops=num_hops,
                 chunk_strategy=self.settings.graphrag.chunker,
                 graph_name=self.settings.graphrag.graph_name,
-                raw=query_sources if isinstance(query_sources, dict) else {"query_sources": query_sources},
+                raw={
+                    "retrieved": raw.get("retrieved", []),
+                    "verbose": raw.get("verbose", {}),
+                },
             ),
             retrieval_ms=retrieval_ms,
             generation_ms=generation_ms,
@@ -152,3 +143,45 @@ class GraphRAGPipeline(BasePipeline):
             estimated_cost=0.0,
             raw={"status": "unavailable", "endpoint": endpoint, "error": message},
         )
+
+    def _extract_sources(self, raw: dict[str, Any]) -> list[SourceRecord]:
+        sources: list[SourceRecord] = []
+
+        for idx, item in enumerate(raw.get("retrieved", []) or [], start=1):
+            candidate_answer = item.get("candidate_answer", "")
+            if not candidate_answer:
+                continue
+            sources.append(
+                SourceRecord(
+                    id=f"retrieved-{idx}",
+                    title="GraphRAG Candidate",
+                    snippet=candidate_answer.strip(),
+                    score=item.get("score"),
+                    metadata=item,
+                )
+            )
+
+        verbose = raw.get("verbose", {}) or {}
+        final_retrieval = verbose.get("final_retrieval", {}) if isinstance(verbose, dict) else {}
+        for vertex_id, snippets in final_retrieval.items():
+            text_snippets = [snippet for snippet in snippets if snippet]
+            if not text_snippets:
+                continue
+            sources.append(
+                SourceRecord(
+                    id=str(vertex_id),
+                    title=str(vertex_id),
+                    snippet="\n\n".join(text_snippets).strip(),
+                    score=None,
+                    metadata={"vertex_id": vertex_id, "snippets": snippets},
+                )
+            )
+
+        deduped: list[SourceRecord] = []
+        seen: set[str] = set()
+        for source in sources:
+            if source.id in seen:
+                continue
+            seen.add(source.id)
+            deduped.append(source)
+        return deduped

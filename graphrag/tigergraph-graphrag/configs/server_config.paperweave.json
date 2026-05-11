@@ -1,0 +1,59 @@
+{
+  "db_config": {
+    "hostname": "http://tigergraph",
+    "restppPort": "9000",
+    "gsPort": "14240",
+    "username": "tigergraph",
+    "password": "tigergraph",
+    "getToken": false,
+    "default_timeout": 300,
+    "default_mem_threshold": 5000,
+    "default_thread_limit": 8
+  },
+  "graphrag_config": {
+    "reuse_embedding": false,
+    "ecc": "http://graphrag-ecc:8001",
+    "chat_history_api": "http://chat-history:8002",
+    "chunker": "semantic",
+    "extractor": "llm",
+    "top_k": 5,
+    "num_hops": 2,
+    "community_level": 2,
+    "chunk_only": true,
+    "doc_only": false,
+    "chunker_config": {
+      "chunk_size": 2048,
+      "overlap_size": 256,
+      "method": "percentile",
+      "threshold": 0.95
+    }
+  },
+  "llm_config": {
+    "embedding_service": {
+      "embedding_model_service": "ollama",
+      "base_url": "http://host.docker.internal:11434",
+      "model_name": "nomic-embed-text",
+      "dimensions": 768,
+      "authentication_configuration": {}
+    },
+    "completion_service": {
+      "llm_service": "ollama",
+      "base_url": "http://host.docker.internal:11434",
+      "llm_model": "qwen2.5:7b",
+      "model_kwargs": {
+        "temperature": 0.1
+      },
+      "prompt_path": "./common/prompts/openai_gpt4/"
+    }
+  },
+  "chat_config": {
+    "apiPort": "8002",
+    "dbPath": "chats.db",
+    "dbLogPath": "db.log",
+    "logPath": "requestLogs.jsonl",
+    "conversationAccessRoles": [
+      "superuser",
+      "globaldesigner"
+    ]
+  }
+}

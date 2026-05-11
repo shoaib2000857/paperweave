@@ -106,8 +106,9 @@ data/basic_rag/**
 *.db-wal
 
 # TigerGraph / vendored upstream clone should not be committed from this repo
-graphrag/tigergraph-graphrag/
+# graphrag/tigergraph-graphrag/
 
 # Codex / agent local metadata
 .agents/
 .codex/
+graphrag/tigergraph-graphrag/docs/data/ExportedGraph.zip

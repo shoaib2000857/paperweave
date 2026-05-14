@@ -70,7 +70,10 @@ export default function HomePage() {
         <GraphPreview sources={result?.graphrag.sources ?? []} />
       </section>
 
-      <SourceList sources={result?.graphrag.sources ?? []} />
+      <section className="grid gap-6 lg:grid-cols-2">
+        <SourceList title="Basic RAG Evidence" sources={result?.basic_rag.sources ?? []} />
+        <SourceList title="GraphRAG Evidence" sources={result?.graphrag.sources ?? []} />
+      </section>
     </main>
   );
 }

@@ -544,4 +544,12 @@ class TigerGraphEmbeddingStore(EmbeddingStore):
         return []
 
     def __del__(self):
-        logger.info("TigerGraphEmbeddingStore destructed.")
+        try:
+            import sys
+            if getattr(sys, "is_finalizing", lambda: False)():
+                return
+            import logging
+            logging.getLogger(__name__).info("TigerGraphEmbeddingStore destructed.")
+        except Exception:
+            # Avoid raising during interpreter shutdown
+            pass

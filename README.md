@@ -12,7 +12,7 @@ It includes:
 - `frontend/`: Next.js comparison UI
 - `scripts/`: dataset, parsing, ingestion, indexing, and evaluation utilities
 - `configs/`: runtime config
-- `graphrag/`: TigerGraph GraphRAG integration
+- `graphrag/`: TigerGraph GraphRAG integration¸¸¸¸¸
 - `docs/`: setup and usage guides
 
 ## Recommended Workflow
@@ -105,6 +105,19 @@ Frontend:
 
 ```bash
 cd frontend && npm run dev
+```
+
+Basic RAG indexing:
+
+```bash
+python scripts/build_basic_rag.py
+python scripts/test_basic_rag.py "What does the corpus say about retrieval augmented generation?"
+```
+
+On a fresh clone with no local paper corpus yet, bootstrap a small public arXiv corpus and build the index:
+
+```bash
+python scripts/build_basic_rag.py --bootstrap-arxiv
 ```
 
 Optional PaperWeave Docker app:

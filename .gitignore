@@ -92,6 +92,8 @@ data/ingestion_temp/**
 !data/ingestion_temp/.gitkeep
 data/basic_rag/**
 !data/basic_rag/.gitkeep
+data/chroma/**
+!data/chroma/.gitkeep
 
 # Keep curated small assets committed
 !data/eval_questions/

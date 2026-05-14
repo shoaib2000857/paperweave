@@ -45,6 +45,7 @@ class ProviderConfig(BaseModel):
     api_key_env: str | None = None
     temperature: float = 0.0
     max_tokens: int = 1024
+    timeout_seconds: float = 300.0
     pricing: PricingConfig = Field(default_factory=PricingConfig)
 
 
@@ -151,10 +152,16 @@ class Settings(BaseSettings):
         raw["providers"]["llm"]["provider"] = os.getenv("LLM_PROVIDER", raw["providers"]["llm"].get("provider", "ollama"))
         raw["providers"]["llm"]["model"] = os.getenv("LLM_MODEL", raw["providers"]["llm"].get("model", "qwen2.5:7b"))
         raw["providers"]["llm"]["base_url"] = os.getenv("LLM_BASE_URL", raw["providers"]["llm"].get("base_url"))
+        raw["providers"]["llm"]["max_tokens"] = int(os.getenv("LLM_MAX_TOKENS", str(raw["providers"]["llm"].get("max_tokens", 1024))))
+        raw["providers"]["llm"]["timeout_seconds"] = float(
+            os.getenv("LLM_TIMEOUT_SECONDS", str(raw["providers"]["llm"].get("timeout_seconds", 300.0)))
+        )
         raw["providers"]["embeddings"]["provider"] = os.getenv("EMBEDDING_PROVIDER", raw["providers"]["embeddings"].get("provider", "ollama"))
         raw["providers"]["embeddings"]["model"] = os.getenv("EMBEDDING_MODEL", raw["providers"]["embeddings"].get("model", "nomic-embed-text"))
         raw["providers"]["embeddings"]["base_url"] = os.getenv("EMBEDDING_BASE_URL", raw["providers"]["embeddings"].get("base_url"))
         raw["providers"]["embeddings"]["dimensions"] = int(os.getenv("EMBEDDING_DIMENSIONS", str(raw["providers"]["embeddings"].get("dimensions", 768))))
+        raw.setdefault("paths", {})
+        raw["paths"]["basic_rag_dir"] = os.getenv("BASIC_RAG_DIR", raw["paths"].get("basic_rag_dir", "data/chroma"))
         raw["providers"]["judge"]["provider"] = os.getenv("JUDGE_PROVIDER", raw["providers"]["judge"].get("provider", "gemini"))
         raw["providers"]["judge"]["model"] = os.getenv("JUDGE_MODEL", raw["providers"]["judge"].get("model", "gemini-2.5-flash"))
         raw["providers"]["judge"]["base_url"] = os.getenv("JUDGE_BASE_URL", raw["providers"]["judge"].get("base_url"))

@@ -93,6 +93,7 @@ class LivePipelineMetrics(BaseModel):
     bertscore_raw_f1: float | None = None
     bertscore_rescaled_f1: float | None = None
     judge_score: float | None = None
+    judge_correctness_pct: float | None = None
     judge_pass: bool | None = None
     retrieval_quality: float = 0.0
     citation_correctness: float = 0.0

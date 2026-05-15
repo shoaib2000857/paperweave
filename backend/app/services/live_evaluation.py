@@ -57,6 +57,7 @@ class LiveEvaluationService:
 
         bert_started = time.perf_counter()
         bertscore_result = evaluate_bertscore(records, model_type=self.settings.evaluation.bertscore_model)
+        bertscore_available = True
         bert_ms = (time.perf_counter() - bert_started) * 1000
 
         judge_started = time.perf_counter()
@@ -104,7 +105,7 @@ class LiveEvaluationService:
             "global_metrics": global_metrics,
             "benchmark": benchmark_like,
             "bertscore": {
-                "available": True,
+                "available": bertscore_available,
                 "path": "live://bertscore",
                 "data": bertscore_result,
             },
@@ -121,21 +122,21 @@ class LiveEvaluationService:
             },
         }
 
-    def _consensus_reference(self, responses: dict[str, AskResponse]) -> str:
-        lines: list[str] = []
-        for pipeline in ("llm-only", "basic-rag", "graphrag"):
-            response = responses.get(pipeline)
-            if not response:
-                continue
-            lines.append(f"{pipeline}: {response.answer}")
-        return "\n\n".join(lines)
-
     def _build_leaderboard(self, summary: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
         rows = [{"pipeline": pipeline, **values} for pipeline, values in summary.items()]
         rows.sort(key=lambda row: row.get("hackathon_weighted_score", 0.0), reverse=True)
         for index, row in enumerate(rows, start=1):
             row["rank"] = index
         return rows
+
+    def _consensus_reference(self, responses: dict[str, AskResponse]) -> str:
+        lines: list[str] = []
+        for pipeline in ("llm-only", "basic-rag", "graphrag"):
+            response = responses.get(pipeline)
+            if not response or not response.answer.strip():
+                continue
+            lines.append(f"{pipeline}: {response.answer}")
+        return "\n\n".join(lines)
 
     def _build_pipeline_results(
         self,
@@ -170,6 +171,7 @@ class LiveEvaluationService:
                     bertscore_raw_f1=self._as_optional_float(record.get("bertscore_raw_f1")),
                     bertscore_rescaled_f1=self._as_optional_float(record.get("bertscore_rescaled_f1")),
                     judge_score=self._as_optional_float(record.get("judge_score")),
+                    judge_correctness_pct=self._judge_correctness_pct(record),
                     judge_pass=bool(record.get("judge_pass")) if record.get("judge_pass") is not None else None,
                     retrieval_quality=float(record.get("context_relevance") or 0.0),
                     citation_correctness=float(record.get("citation_correctness") or 0.0),
@@ -219,3 +221,9 @@ class LiveEvaluationService:
             return float(value)
         except (TypeError, ValueError):
             return None
+
+    def _judge_correctness_pct(self, record: dict[str, Any]) -> float | None:
+        score = self._as_optional_float(record.get("judge_score"))
+        if score is None:
+            return None
+        return max(0.0, min(100.0, (score / 5.0) * 100.0))

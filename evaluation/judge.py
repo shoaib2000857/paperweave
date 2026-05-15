@@ -27,14 +27,34 @@ async def evaluate_with_judge(records: list[dict[str, Any]], judge_client: LLMCl
 
 
 async def _judge_one(record: dict[str, Any], judge_client: LLMClient) -> dict[str, Any]:
+    reference = str(record.get("ground_truth") or "").strip()
+    reference_is_consensus = reference.startswith("llm-only:") or "\n\nbasic-rag:" in reference or "\n\ngraphrag:" in reference
+    context = str(record.get("retrieved_context") or "")[:6000]
+    if reference and not reference_is_consensus:
+        grading_target = (
+            "Grade the candidate answer against the reference answer and any retrieved context. "
+            "Use strict scientific correctness standards."
+        )
+        reference_block = f"Reference answer: {reference}\n\n"
+    else:
+        grading_target = (
+            "No ground-truth reference answer is available. Grade the candidate answer against the question and retrieved context. "
+            "If retrieved context is present, reward answers that are grounded in it. If no retrieved context is present, "
+            "grade factual correctness from scientific knowledge but give low grounding."
+        )
+        reference_block = (
+            f"Cross-pipeline consensus for similarity only, not ground truth:\n{reference}\n\n"
+            if reference_is_consensus
+            else "Reference answer: unavailable\n\n"
+        )
+
     prompt = (
-        "You are an expert scientific QA evaluator. Grade the candidate answer against the reference answer "
-        "and any retrieved context. Use strict scientific correctness standards.\n\n"
+        f"You are an expert scientific QA evaluator. {grading_target}\n\n"
         "Scoring rubric: 1=poor, 2=weak, 3=partially correct, 4=mostly correct, 5=excellent.\n"
         "Pass only if score >= 4, hallucination_level <= 2, and the answer is scientifically accurate.\n\n"
         f"Question: {record.get('question')}\n\n"
-        f"Reference answer: {record.get('ground_truth')}\n\n"
-        f"Retrieved context: {record.get('retrieved_context')[:6000]}\n\n"
+        f"{reference_block}"
+        f"Retrieved context: {context}\n\n"
         f"Candidate answer: {record.get('answer')}\n\n"
         "Return only valid JSON with this schema:\n"
         "{\n"

@@ -5,6 +5,7 @@ from typing import Any
 from app.core.config import Settings
 from app.models.api import EvaluationResult
 from app.services.llm import LLMClient
+from evaluation.bertscore_eval import score_bertscore_pairs
 
 
 class EvaluationService:
@@ -16,15 +17,12 @@ class EvaluationService:
         if not reference_answer:
             return None
 
-        from bert_score import score as bert_score
-
-        precision, recall, f1 = bert_score(
+        bertscore = score_bertscore_pairs(
             [answer],
             [reference_answer],
-            lang="en",
             model_type=self.settings.evaluation.bertscore_model,
-            verbose=False,
-        )
+            rescale_with_baseline=False,
+        )[0]
         judge_prompt = (
             "You are grading an answer for factual alignment.\n"
             f"Question: {question}\n"
@@ -35,7 +33,7 @@ class EvaluationService:
         judge_text, _, _ = await self.llm_client.complete(judge_prompt)
         first_line = judge_text.strip().splitlines()[0].upper() if judge_text.strip() else "FAIL"
         return EvaluationResult(
-            bertscore_f1=float(f1[0].item()),
+            bertscore_f1=bertscore["raw_f1"],
             judge_pass=first_line.startswith("PASS"),
             judge_reasoning=judge_text.strip(),
         )

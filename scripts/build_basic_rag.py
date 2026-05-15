@@ -19,7 +19,7 @@ except ImportError:  # pragma: no cover
     from langchain_community.vectorstores import Chroma
 
 try:
-    from langchain_community.document_loaders import PyMuPDFLoader, TextLoader
+    from langchain_community.document_loaders import PyMuPDFLoader
 except ImportError as exc:  # pragma: no cover
     raise SystemExit("Install LangChain loaders with `pip install -e .` before building Basic RAG.") from exc
 
@@ -149,52 +149,68 @@ def bootstrap_arxiv_corpus(settings, max_results: int) -> int:
     return added
 
 
+def add_text_document(
+    documents: list[Document],
+    *,
+    path: Path,
+    content: str,
+    page: int = -1,
+    extra_metadata: dict[str, str | int | float | bool] | None = None,
+) -> None:
+    text = content.strip()
+    if not text:
+        logger.warning("Skipping empty parsed document: %s", path)
+        return
+    metadata: dict[str, str | int | float | bool] = {
+        "source": str(path),
+        "paper_filename": path.name,
+        "page": page,
+    }
+    if extra_metadata:
+        metadata.update(extra_metadata)
+    documents.append(Document(page_content=text, metadata=chroma_metadata(metadata)))
+
+
 def load_documents(settings) -> list[Document]:
     documents: list[Document] = []
     loaded_stems: set[str] = set()
-
-    pdf_dir = Path(settings.paths.raw_pdfs_dir)
-    for pdf_path in sorted(pdf_dir.glob("*.pdf")):
-        for document in PyMuPDFLoader(str(pdf_path)).load():
-            metadata = dict(document.metadata)
-            metadata["source"] = str(pdf_path)
-            metadata["paper_filename"] = pdf_path.name
-            metadata["page"] = int(metadata.get("page", -1))
-            documents.append(Document(page_content=document.page_content, metadata=chroma_metadata(metadata)))
-        loaded_stems.add(pdf_path.stem)
 
     markdown_dir = Path(settings.paths.parsed_markdown_dir)
     for markdown_path in sorted(markdown_dir.glob("**/*.md")):
         if markdown_path.stem in loaded_stems:
             continue
-        loaded = TextLoader(str(markdown_path), encoding="utf-8").load()
-        for document in loaded:
-            metadata = dict(document.metadata)
-            metadata["source"] = str(markdown_path)
-            metadata["paper_filename"] = markdown_path.name
-            metadata["page"] = -1
-            documents.append(Document(page_content=document.page_content, metadata=chroma_metadata(metadata)))
+        add_text_document(
+            documents,
+            path=markdown_path,
+            content=markdown_path.read_text(encoding="utf-8"),
+            extra_metadata={"loader": "parsed_markdown"},
+        )
         loaded_stems.add(markdown_path.stem)
 
     text_dir = Path(settings.paths.parsed_text_dir)
     for text_path in sorted(text_dir.glob("**/*.txt")):
         if text_path.stem in loaded_stems:
             continue
-        loaded = TextLoader(str(text_path), encoding="utf-8").load()
-        for document in loaded:
-            metadata = dict(document.metadata)
-            metadata["source"] = str(text_path)
-            metadata["paper_filename"] = text_path.name
-            metadata["page"] = -1
-            documents.append(Document(page_content=document.page_content, metadata=chroma_metadata(metadata)))
+        add_text_document(
+            documents,
+            path=text_path,
+            content=text_path.read_text(encoding="utf-8"),
+            extra_metadata={"loader": "parsed_text"},
+        )
         loaded_stems.add(text_path.stem)
 
     records_path = Path(settings.paths.jsonl_dir) / "papers.jsonl"
     if records_path.exists():
+        skipped_jsonl = 0
         for line_number, line in enumerate(records_path.read_text(encoding="utf-8").splitlines(), start=1):
             if not line.strip():
                 continue
-            record = json.loads(line)
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                skipped_jsonl += 1
+                logger.warning("Skipping malformed JSONL record %s:%s: %s", records_path, line_number, exc)
+                continue
             text = str(record.get("text") or "").strip()
             if not text:
                 continue
@@ -202,19 +218,40 @@ def load_documents(settings) -> list[Document]:
             if paper_id in loaded_stems:
                 continue
             title = str(record.get("title") or paper_id)
-            documents.append(
-                Document(
-                    page_content=text,
-                    metadata={
-                        "source": str(records_path),
-                        "paper_filename": f"{paper_id}.jsonl",
-                        "paper_id": paper_id,
-                        "title": title,
-                        "page": -1,
-                    },
-                )
+            add_text_document(
+                documents,
+                path=records_path,
+                content=text,
+                extra_metadata={
+                    "loader": "jsonl_record",
+                    "paper_filename": f"{paper_id}.jsonl",
+                    "paper_id": paper_id,
+                    "title": title,
+                },
             )
             loaded_stems.add(paper_id)
+        if skipped_jsonl:
+            logger.warning("Skipped %s malformed JSONL records from %s", skipped_jsonl, records_path)
+
+    pdf_dir = Path(settings.paths.raw_pdfs_dir)
+    skipped_pdfs = 0
+    for pdf_path in sorted(pdf_dir.glob("*.pdf")):
+        if pdf_path.stem in loaded_stems:
+            continue
+        try:
+            for document in PyMuPDFLoader(str(pdf_path)).load():
+                metadata = dict(document.metadata)
+                metadata["source"] = str(pdf_path)
+                metadata["paper_filename"] = pdf_path.name
+                metadata["page"] = int(metadata.get("page", -1))
+                metadata["loader"] = "pymupdf_pdf"
+                documents.append(Document(page_content=document.page_content, metadata=chroma_metadata(metadata)))
+            loaded_stems.add(pdf_path.stem)
+        except Exception as exc:
+            skipped_pdfs += 1
+            logger.warning("Skipping unreadable PDF %s: %s", pdf_path.name, exc)
+    if skipped_pdfs:
+        logger.warning("Skipped %s unreadable PDFs while building Basic RAG", skipped_pdfs)
 
     return documents
 

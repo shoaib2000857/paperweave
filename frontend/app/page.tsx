@@ -45,6 +45,8 @@ export default function HomePage() {
   }
 
   const isLoading = phase === "running" || phase === "evaluating";
+  const hasReferenceAnswer = result?.global_metrics?.evaluation_reference_source === "user_reference_answer";
+  const bertscoreColumn = hasReferenceAnswer ? "BERTScore" : "BERTSim";
 
   const chartData = result
     ? [
@@ -146,8 +148,8 @@ export default function HomePage() {
                   <th className="pb-2 pr-4">Rank</th>
                   <th className="pb-2 pr-4">Pipeline</th>
                   <th className="pb-2 pr-4">Weighted</th>
-                  <th className="pb-2 pr-4">BERTScore</th>
-                  <th className="pb-2 pr-4">Judge Pass</th>
+                  <th className="pb-2 pr-4">{bertscoreColumn}</th>
+                  <th className="pb-2 pr-4">Judge Score</th>
                   <th className="pb-2 pr-4">Latency</th>
                   <th className="pb-2 pr-4">Token Δ</th>
                 </tr>
@@ -169,7 +171,7 @@ export default function HomePage() {
                     </td>
                     <td className="py-2 pr-4">{Number(row.hackathon_weighted_score ?? 0).toFixed(2)}</td>
                     <td className="py-2 pr-4">{Number(row.avg_bertscore_rescaled_f1 ?? 0).toFixed(3)}</td>
-                    <td className="py-2 pr-4">{(Number(row.judge_pass_rate ?? 0) * 100).toFixed(1)}%</td>
+                    <td className="py-2 pr-4">{(Number(row.avg_judge_score ?? 0) * 20).toFixed(0)}%</td>
                     <td className="py-2 pr-4">{Number(row.avg_total_latency_ms ?? 0).toFixed(0)} ms</td>
                     <td className="py-2 pr-4">{Number(row.avg_token_reduction_pct_vs_llm_only ?? 0).toFixed(1)}%</td>
                   </tr>

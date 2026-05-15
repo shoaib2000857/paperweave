@@ -8,6 +8,7 @@ type Props = {
 
 export function ResultCard({ title, result, loading = false }: Props) {
   const statusLabel = loading ? "computing" : result ? "live" : "idle";
+  const bertscoreLabel = result?.evaluation_reference === "user_reference_answer" ? "BERTScore" : "BERTSim";
   const statusClass = loading
     ? "bg-amber-200 text-amber-900"
     : result
@@ -39,10 +40,17 @@ export function ResultCard({ title, result, loading = false }: Props) {
         <Metric label="Latency" value={result ? `${result.metrics.total_latency_ms.toFixed(0)} ms` : "-"} />
         <Metric label="Cost" value={result ? `$${result.estimated_cost.toFixed(5)}` : "-"} />
         <Metric label="Sources" value={result ? String(result.sources.length) : "-"} />
-        <Metric label="BERTScore" value={result ? (result.metrics.bertscore_rescaled_f1 ?? 0).toFixed(3) : "-"} />
+        <Metric
+          label={bertscoreLabel}
+          value={result ? (result.metrics.bertscore_rescaled_f1 ?? 0).toFixed(3) : "-"}
+        />
         <Metric
           label="Judge"
-          value={result ? `${(result.metrics.judge_score ?? 0).toFixed(2)} (${result.metrics.judge_pass ? "pass" : "fail"})` : "-"}
+          value={
+            result
+              ? `${(result.metrics.judge_correctness_pct ?? (result.metrics.judge_score ?? 0) * 20).toFixed(0)}% (${result.metrics.judge_pass ? "pass" : "fail"})`
+              : "-"
+          }
         />
         <Metric
           label="Hallucination"

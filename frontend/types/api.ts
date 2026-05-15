@@ -46,6 +46,7 @@ export type LivePipelineMetrics = {
   bertscore_raw_f1?: number | null;
   bertscore_rescaled_f1?: number | null;
   judge_score?: number | null;
+  judge_correctness_pct?: number | null;
   judge_pass?: boolean | null;
   retrieval_quality: number;
   citation_correctness: number;

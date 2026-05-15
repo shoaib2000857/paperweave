@@ -170,6 +170,7 @@ def summarize_pipeline_records(records: list[dict[str, Any]]) -> dict[str, dict[
             "p50_total_latency_ms": percentile([item.get("total_latency_ms") for item in items], 50),
             "p95_total_latency_ms": percentile([item.get("total_latency_ms") for item in items], 95),
             "retrieval_hit_rate": safe_mean([1.0 if item.get("retrieval_hit") else 0.0 for item in items]),
+            "avg_retrieved_chunk_count": safe_mean([item.get("retrieved_chunk_count") for item in items]),
             "avg_source_overlap": safe_mean([item.get("source_overlap") for item in items]),
             "avg_citation_correctness": safe_mean([item.get("citation_correctness") for item in items]),
             "avg_context_relevance": safe_mean([item.get("context_relevance") for item in items]),
@@ -182,6 +183,10 @@ def summarize_pipeline_records(records: list[dict[str, Any]]) -> dict[str, dict[
             "avg_bertscore_rescaled_f1": safe_mean([item.get("bertscore_rescaled_f1") for item in items]),
             "judge_pass_rate": safe_mean([1.0 if item.get("judge_pass") else 0.0 for item in items if item.get("judge_score") is not None]),
             "avg_judge_score": safe_mean([item.get("judge_score") for item in items]),
+            "avg_judge_grounding": safe_mean([item.get("judge_grounding") for item in items]),
+            "avg_judge_factual_correctness": safe_mean([item.get("judge_factual_correctness") for item in items]),
+            "avg_judge_completeness": safe_mean([item.get("judge_completeness") for item in items]),
+            "avg_judge_scientific_accuracy": safe_mean([item.get("judge_scientific_accuracy") for item in items]),
             "judge_hallucination_rate": safe_mean([item.get("judge_hallucination_level") for item in items]),
         }
     add_leaderboard_scores(summary)
@@ -193,14 +198,20 @@ def add_leaderboard_scores(summary: dict[str, dict[str, Any]]) -> None:
     max_latency = max((data["avg_total_latency_ms"] for data in summary.values()), default=1.0) or 1.0
     for data in summary.values():
         token_score = clamp01(1.0 - (data["avg_total_tokens"] / max_tokens))
-        accuracy_score = clamp01(max(data["avg_bertscore_rescaled_f1"], data["avg_bertscore_raw_f1"], data["avg_judge_score"] / 5.0))
+        judge_score = data["avg_judge_score"] / 5.0
+        if data.get("avg_judge_grounding"):
+            judge_score = (0.70 * judge_score) + (0.30 * (data["avg_judge_grounding"] / 5.0))
+        accuracy_score = clamp01(max(data["avg_bertscore_rescaled_f1"], data["avg_bertscore_raw_f1"], judge_score))
         latency_score = clamp01(1.0 - (data["avg_total_latency_ms"] / max_latency))
+        has_retrieval = data.get("avg_retrieved_chunk_count", 0.0) > 0
+        citation_score = data["avg_citation_correctness"] if has_retrieval else 0.0
+        duplicate_score = (1.0 - data["avg_duplicate_chunk_ratio"]) if has_retrieval else 0.0
         engineering_score = clamp01(
             (
                 data["retrieval_hit_rate"]
-                + data["avg_citation_correctness"]
+                + citation_score
                 + (1.0 - data["avg_fabricated_citation_rate"])
-                + (1.0 - data["avg_duplicate_chunk_ratio"])
+                + duplicate_score
             )
             / 4.0
         )

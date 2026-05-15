@@ -43,7 +43,7 @@ providers:
 dataset:
   query: 'cat:cs.CL AND ("large language model" OR "LLM" OR "retrieval augmented generation" OR "GraphRAG" OR "hallucination" OR "transformer" OR "retrieval")'
   max_results: 500
-  target_tokens: 2200000
+  target_tokens: 2000000
   min_tokens_per_paper: 1000
   request_delay_seconds: 1.0
   categories:
@@ -54,6 +54,34 @@ dataset:
     - transformers
     - retrieval
     - NLP
+  curated_ids:
+    - "1706.03762"
+    - "1810.04805"
+    - "2005.14165"
+    - "2004.04906"
+    - "2004.12832"
+    - "2005.11401"
+    - "2205.14135"
+    - "2302.13971"
+    - "2307.09288"
+    - "2310.06825"
+    - "2401.04088"
+  curated_titles:
+    - Attention Is All You Need
+    - "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+    - Language Models are Few-Shot Learners
+    - "LLaMA: Open and Efficient Foundation Language Models"
+    - "Llama 2: Open Foundation and Fine-Tuned Chat Models"
+    - Mistral 7B
+    - Mixtral of Experts
+    - Qwen2 Technical Report
+    - Qwen2.5 Technical Report
+    - Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
+    - "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection"
+    - Dense Passage Retrieval for Open-Domain Question Answering
+    - "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT"
+    - "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness"
+    - "GraphRAG: Unlocking LLM discovery on narrative private data"
 
 chunking:
   strategy: semantic

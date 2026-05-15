@@ -75,6 +75,8 @@ class DatasetConfig(BaseModel):
     min_tokens_per_paper: int
     request_delay_seconds: float
     categories: list[str]
+    curated_ids: list[str] = Field(default_factory=list)
+    curated_titles: list[str] = Field(default_factory=list)
 
 
 class ChunkingConfig(BaseModel):

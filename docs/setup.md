@@ -44,6 +44,7 @@ GraphRAG runs inside Docker, so Ollama must be reachable from both:
 Start Ollama like this:
 
 ```bash
+sudo pkill ollama
 export OLLAMA_HOST=0.0.0.0:11434
 ollama serve
 ```
@@ -170,6 +171,12 @@ PDF mode:
 
 ```bash
 python scripts/ingest_graphrag.py --mode pdf
+```
+
+If the dataset is larger and GraphRAG takes a while to preprocess the server-side folder, use a longer timeout:
+
+```bash
+python scripts/ingest_graphrag.py --mode pdf --timeout-seconds 1800
 ```
 
 Markdown mode:

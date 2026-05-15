@@ -8,6 +8,7 @@ from app.pipelines.graphrag import GraphRAGPipeline
 from app.pipelines.llm_only import LLMOnlyPipeline
 from app.services.benchmark import BenchmarkService
 from app.services.evaluation import EvaluationService
+from app.services.live_evaluation import LiveEvaluationService
 from app.services.llm import LLMClient
 from app.services.metrics import MetricsService
 from app.services.providers import EmbeddingProvider, LLMProviderFactory
@@ -26,6 +27,7 @@ class Container:
     rag_store: BasicRAGStore
     metrics_service: MetricsService
     evaluation_service: EvaluationService
+    live_evaluation_service: LiveEvaluationService
     llm_only_pipeline: LLMOnlyPipeline
     basic_rag_pipeline: BasicRAGPipeline
     graphrag_pipeline: GraphRAGPipeline
@@ -43,6 +45,7 @@ def build_container() -> Container:
     rag_store = BasicRAGStore(settings)
     metrics_service = MetricsService(settings)
     evaluation_service = EvaluationService(settings=settings, llm_client=judge_client)
+    live_evaluation_service = LiveEvaluationService(settings=settings, judge_client=judge_client)
     llm_only_pipeline = LLMOnlyPipeline(settings=settings, llm_client=llm_client)
     basic_rag_pipeline = BasicRAGPipeline(
         settings=settings,
@@ -71,6 +74,7 @@ def build_container() -> Container:
         rag_store=rag_store,
         metrics_service=metrics_service,
         evaluation_service=evaluation_service,
+        live_evaluation_service=live_evaluation_service,
         llm_only_pipeline=llm_only_pipeline,
         basic_rag_pipeline=basic_rag_pipeline,
         graphrag_pipeline=graphrag_pipeline,

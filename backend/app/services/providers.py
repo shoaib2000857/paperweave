@@ -78,27 +78,39 @@ class OllamaEmbeddingProvider:
 
 
 class OllamaLLMProvider:
-    def __init__(self, base_url: str, model: str, temperature: float, max_tokens: int, timeout_seconds: float):
+    def __init__(
+        self,
+        base_url: str,
+        model: str,
+        temperature: float,
+        max_tokens: int,
+        timeout_seconds: float,
+        force_json: bool = False,
+    ):
         self.base_url = base_url.rstrip("/")
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.timeout_seconds = timeout_seconds
+        self.force_json = force_json
 
     async def generate(self, prompt: str) -> str:
         try:
+            payload: dict = {
+                "model": self.model,
+                "prompt": prompt,
+                "stream": False,
+                "options": {
+                    "temperature": self.temperature,
+                    "num_predict": self.max_tokens,
+                },
+            }
+            if self.force_json:
+                payload["format"] = "json"
             async with httpx.AsyncClient(timeout=self.timeout_seconds) as client:
                 response = await client.post(
                     f"{self.base_url}/api/generate",
-                    json={
-                        "model": self.model,
-                        "prompt": prompt,
-                        "stream": False,
-                        "options": {
-                            "temperature": self.temperature,
-                            "num_predict": self.max_tokens,
-                        },
-                    },
+                    json=payload,
                 )
                 if response.is_error:
                     detail = _response_error_text(response)
@@ -218,6 +230,7 @@ class LLMProviderFactory:
             temperature=0.0,
             max_tokens=512,
             timeout_seconds=300.0,
+            force_json=True,
         )
 
     def _build_provider_from_config(
@@ -229,6 +242,7 @@ class LLMProviderFactory:
         temperature: float,
         max_tokens: int,
         timeout_seconds: float,
+        force_json: bool = False,
     ) -> LLMProvider:
         provider = provider.lower()
         if provider == "ollama":
@@ -238,6 +252,7 @@ class LLMProviderFactory:
                 temperature=temperature,
                 max_tokens=max_tokens,
                 timeout_seconds=timeout_seconds,
+                force_json=force_json,
             )
 
         api_key = os.getenv(api_key_env or "", "")

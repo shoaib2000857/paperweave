@@ -1,0 +1,18 @@
+[
+  {
+    "id": "sample-q001",
+    "question": "What is retrieval augmented generation?",
+    "ground_truth": "Retrieval augmented generation combines external retrieval with an LLM so the model answers using fetched supporting context rather than relying only on parametric memory.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": []
+  },
+  {
+    "id": "sample-q002",
+    "question": "Compare Basic RAG and GraphRAG for multi-hop reasoning over scientific papers.",
+    "ground_truth": "Basic RAG retrieves semantically similar chunks, while GraphRAG additionally reasons over entities and relationships to assemble more compact multi-hop evidence.",
+    "category": "comparison",
+    "difficulty": "medium",
+    "sources": []
+  }
+]

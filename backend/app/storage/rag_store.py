@@ -4,17 +4,26 @@ import logging
 from pathlib import Path
 from typing import Any
 
-import chromadb
+try:
+    import chromadb
+except ImportError:  # pragma: no cover - optional runtime dependency
+    chromadb = None
 
 try:
     from langchain_chroma import Chroma
 except ImportError:  # pragma: no cover - compatibility for older LangChain installs
-    from langchain_community.vectorstores import Chroma
+    try:
+        from langchain_community.vectorstores import Chroma
+    except ImportError:  # pragma: no cover - optional runtime dependency
+        Chroma = None
 
 try:
     from langchain_ollama import OllamaEmbeddings
 except ImportError:  # pragma: no cover - compatibility for older LangChain installs
-    from langchain_community.embeddings import OllamaEmbeddings
+    try:
+        from langchain_community.embeddings import OllamaEmbeddings
+    except ImportError:  # pragma: no cover - optional runtime dependency
+        OllamaEmbeddings = None
 
 from app.core.config import Settings
 
@@ -31,9 +40,13 @@ class BasicRAGStore:
         self.embedding_base_url = settings.providers.embeddings.base_url or "http://localhost:11434"
 
     def _embeddings(self) -> OllamaEmbeddings:
+        if OllamaEmbeddings is None:
+            raise RuntimeError("Basic RAG dependencies are not installed. Install langchain-ollama or langchain-community.")
         return OllamaEmbeddings(model=self.embedding_model, base_url=self.embedding_base_url)
 
     def _store(self) -> Chroma:
+        if Chroma is None:
+            raise RuntimeError("Basic RAG dependencies are not installed. Install langchain-chroma or langchain-community.")
         self.base_dir.mkdir(parents=True, exist_ok=True)
         return Chroma(
             collection_name=self.collection_name,
@@ -48,6 +61,9 @@ class BasicRAGStore:
 
     def count(self) -> int:
         if not self.base_dir.exists():
+            return 0
+        if chromadb is None:
+            logger.warning("Basic RAG Chroma dependency is not installed.")
             return 0
         try:
             client = chromadb.PersistentClient(path=str(self.base_dir))

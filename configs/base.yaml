@@ -12,7 +12,7 @@ paths:
   jsonl_dir: data/jsonl
   metadata_dir: data/metadata
   eval_questions_dir: data/eval_questions
-  basic_rag_dir: data/basic_rag
+  basic_rag_dir: data/chroma
   benchmark_dir: benchmarks
   evaluation_dir: evaluations
   report_dir: reports
@@ -25,7 +25,8 @@ providers:
     base_url: http://localhost:11434
     api_key_env: LLM_API_KEY
     temperature: 0.1
-    max_tokens: 1024
+    max_tokens: 512
+    timeout_seconds: 300
     pricing:
       prompt_per_1k: 0.0
       completion_per_1k: 0.0

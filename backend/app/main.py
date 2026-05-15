@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.routes.ask import router as ask_router
+from app.api.routes.evaluation import router as evaluation_router
 from app.api.routes.benchmark import router as benchmark_router
 from app.api.routes.metrics import router as metrics_router
 from app.core.dependencies import build_container
@@ -50,5 +51,6 @@ async def provider_error_handler(_: Request, exc: ProviderError) -> JSONResponse
 
 
 app.include_router(ask_router)
+app.include_router(evaluation_router)
 app.include_router(benchmark_router)
 app.include_router(metrics_router)

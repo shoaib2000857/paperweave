@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from bert_score import score as bert_score
-
 from app.core.config import Settings
 from app.models.api import EvaluationResult
 from app.services.llm import LLMClient
@@ -17,6 +15,8 @@ class EvaluationService:
     async def evaluate(self, question: str, answer: str, reference_answer: str | None) -> EvaluationResult | None:
         if not reference_answer:
             return None
+
+        from bert_score import score as bert_score
 
         precision, recall, f1 = bert_score(
             [answer],

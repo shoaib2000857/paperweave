@@ -1,0 +1,32 @@
+[
+  {
+    "id": "q001",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q002",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q003",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  }
+]

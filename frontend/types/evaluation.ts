@@ -40,6 +40,11 @@ export type BenchmarkRecord = {
   fabricated_citation_rate: number;
   answer_context_mismatch: number;
   unsupported_claim_estimate: number;
+  bertscore_raw_f1?: number;
+  bertscore_rescaled_f1?: number;
+  judge_score?: number;
+  judge_correctness_pct?: number;
+  judge_pass?: boolean;
 };
 
 export type PipelineSummary = {
@@ -55,6 +60,7 @@ export type PipelineSummary = {
   avg_bertscore_rescaled_f1?: number;
   judge_pass_rate?: number;
   avg_judge_score?: number;
+  avg_judge_correctness_pct?: number;
   judge_hallucination_rate?: number;
   avg_fabricated_citation_rate?: number;
   avg_answer_context_mismatch?: number;
@@ -104,6 +110,11 @@ export type EvaluationBenchmark = {
   summary: Record<string, PipelineSummary>;
 };
 
+export type EvaluationOfflineSnapshot = {
+  benchmark: EvaluationBenchmark;
+  leaderboard: EvaluationLeaderboardRow[];
+};
+
 export type EvaluationDashboardResponse = {
   benchmark: EvaluationBenchmark;
   leaderboard: EvaluationLeaderboardRow[];
@@ -111,8 +122,5 @@ export type EvaluationDashboardResponse = {
   judge: EvaluationArtifact;
   report: EvaluationReport;
   live?: Record<string, unknown> | null;
-  offline?: {
-    benchmark: EvaluationBenchmark;
-    leaderboard: EvaluationLeaderboardRow[];
-  };
+  offline?: EvaluationOfflineSnapshot;
 };

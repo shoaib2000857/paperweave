@@ -36,10 +36,11 @@ providers:
     base_url: http://localhost:11434
     dimensions: 768
   judge:
-    provider: gemini
-    model: gemini-2.5-flash
-    base_url: https://generativelanguage.googleapis.com
+    provider: huggingface
+    model: meta-llama/Llama-3.1-8B-Instruct
+    base_url:
     api_key_env: JUDGE_API_KEY
+    timeout_seconds: 300
 
 dataset:
   query: 'cat:cs.CL AND ("large language model" OR "LLM" OR "retrieval augmented generation" OR "GraphRAG" OR "hallucination" OR "transformer" OR "retrieval")'
@@ -117,6 +118,8 @@ tigergraph:
 
 evaluation:
   bertscore_model: microsoft/deberta-xlarge-mnli
+  bertscore_backend: evaluate
+  bertscore_device: cpu
   judge_enabled: true
   categories:
     - lookup

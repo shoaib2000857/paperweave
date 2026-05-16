@@ -56,7 +56,12 @@ class LiveEvaluationService:
         add_hallucination_metrics(records)
 
         bert_started = time.perf_counter()
-        bertscore_result = evaluate_bertscore(records, model_type=self.settings.evaluation.bertscore_model)
+        bertscore_result = evaluate_bertscore(
+            records,
+            model_type=self.settings.evaluation.bertscore_model,
+            device=self.settings.evaluation.bertscore_device,
+            backend=self.settings.evaluation.bertscore_backend,
+        )
         bertscore_available = True
         bert_ms = (time.perf_counter() - bert_started) * 1000
 

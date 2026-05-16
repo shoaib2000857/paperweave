@@ -183,6 +183,7 @@ def summarize_pipeline_records(records: list[dict[str, Any]]) -> dict[str, dict[
             "avg_bertscore_rescaled_f1": safe_mean([item.get("bertscore_rescaled_f1") for item in items]),
             "judge_pass_rate": safe_mean([1.0 if item.get("judge_pass") else 0.0 for item in items if item.get("judge_score") is not None]),
             "avg_judge_score": safe_mean([item.get("judge_score") for item in items]),
+            "avg_judge_correctness_pct": safe_mean([item.get("judge_correctness_pct") for item in items]),
             "avg_judge_grounding": safe_mean([item.get("judge_grounding") for item in items]),
             "avg_judge_factual_correctness": safe_mean([item.get("judge_factual_correctness") for item in items]),
             "avg_judge_completeness": safe_mean([item.get("judge_completeness") for item in items]),

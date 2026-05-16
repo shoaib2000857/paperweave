@@ -6,12 +6,18 @@ from threading import Lock
 from typing import Any
 
 logger = logging.getLogger(__name__)
-_SCORER_LOCK = Lock()
-_MISSING_BASELINE_WARNED: set[tuple[str, str]] = set()
+_BERTSCORE_LOCK = Lock()
+
+
+@lru_cache(maxsize=1)
+def _get_hf_bertscore_metric() -> Any:
+    import evaluate
+
+    return evaluate.load("bertscore")
 
 
 @lru_cache(maxsize=4)
-def _get_scorer(model_type: str, lang: str, device: str):
+def _get_local_scorer(model_type: str, lang: str, device: str) -> Any:
     from bert_score import BERTScorer
 
     scorer = BERTScorer(
@@ -20,7 +26,7 @@ def _get_scorer(model_type: str, lang: str, device: str):
         rescale_with_baseline=False,
         device=device,
     )
-    # Some models set model_max_length to a huge value that overflows Rust's usize in tokenizers.
+    # Some tokenizers expose absurdly large max lengths that break downstream Rust usize conversions.
     scorer._tokenizer.model_max_length = 512
     return scorer
 
@@ -34,14 +40,111 @@ def score_bertscore_pairs(
     rescale_with_baseline: bool = True,
     lang: str = "en",
     device: str = "cpu",
+    backend: str = "evaluate",
 ) -> list[dict[str, float]]:
     if len(candidates) != len(references):
         raise ValueError("BERTScore candidates and references must have the same length")
     if not candidates:
         return []
 
-    scorer = _get_scorer(model_type, lang, device)
-    with _SCORER_LOCK:
+    backend = backend.lower()
+    if backend == "evaluate":
+        return _score_with_hf_evaluate(
+            candidates,
+            references,
+            model_type=model_type,
+            batch_size=batch_size,
+            rescale_with_baseline=rescale_with_baseline,
+            lang=lang,
+            device=device,
+        )
+    return _score_with_local_scorer(
+        candidates,
+        references,
+        model_type=model_type,
+        batch_size=batch_size,
+        rescale_with_baseline=rescale_with_baseline,
+        lang=lang,
+        device=device,
+    )
+
+
+def _score_with_hf_evaluate(
+    candidates: list[str],
+    references: list[str],
+    *,
+    model_type: str,
+    batch_size: int,
+    rescale_with_baseline: bool,
+    lang: str,
+    device: str,
+) -> list[dict[str, float]]:
+    metric = _get_hf_bertscore_metric()
+    try:
+        with _BERTSCORE_LOCK:
+            raw = metric.compute(
+                predictions=candidates,
+                references=references,
+                model_type=model_type,
+                batch_size=batch_size,
+                lang=lang,
+                device=device,
+                rescale_with_baseline=False,
+            )
+            if rescale_with_baseline:
+                rescaled = metric.compute(
+                    predictions=candidates,
+                    references=references,
+                    model_type=model_type,
+                    batch_size=batch_size,
+                    lang=lang,
+                    device=device,
+                    rescale_with_baseline=True,
+                )
+            else:
+                rescaled = raw
+    except OverflowError as exc:
+        logger.warning(
+            "BERTScore evaluate backend hit tokenizer overflow for %s on %s; falling back to local scorer: %s",
+            model_type,
+            device,
+            exc,
+        )
+        return _score_with_local_scorer(
+            candidates,
+            references,
+            model_type=model_type,
+            batch_size=batch_size,
+            rescale_with_baseline=rescale_with_baseline,
+            lang=lang,
+            device=device,
+        )
+
+    return [
+        {
+            "precision": float(raw["precision"][index]),
+            "recall": float(raw["recall"][index]),
+            "raw_f1": float(raw["f1"][index]),
+            "rescaled_precision": float(rescaled["precision"][index]),
+            "rescaled_recall": float(rescaled["recall"][index]),
+            "rescaled_f1": float(rescaled["f1"][index]),
+        }
+        for index in range(len(candidates))
+    ]
+
+
+def _score_with_local_scorer(
+    candidates: list[str],
+    references: list[str],
+    *,
+    model_type: str,
+    batch_size: int,
+    rescale_with_baseline: bool,
+    lang: str,
+    device: str,
+) -> list[dict[str, float]]:
+    scorer = _get_local_scorer(model_type, lang, device)
+    with _BERTSCORE_LOCK:
         precision, recall, f1 = scorer.score(candidates, references, batch_size=batch_size)
         if rescale_with_baseline:
             baseline = _baseline_values(scorer, model_type, lang)
@@ -71,12 +174,12 @@ def _baseline_values(scorer: Any, model_type: str, lang: str) -> Any | None:
     try:
         return scorer.baseline_vals
     except ValueError as exc:
-        # Custom/scientific models often do not ship a BERTScore baseline file.
-        # Keep evaluation usable and make rescaled metrics equal raw metrics.
-        key = (model_type, lang)
-        if key not in _MISSING_BASELINE_WARNED:
-            _MISSING_BASELINE_WARNED.add(key)
-            logger.warning("BERTScore baseline unavailable for %s/%s; using raw scores for rescaled metrics: %s", lang, model_type, exc)
+        logger.warning(
+            "BERTScore baseline unavailable for %s/%s; using raw scores for rescaled metrics: %s",
+            lang,
+            model_type,
+            exc,
+        )
         return None
 
 
@@ -85,10 +188,12 @@ def evaluate_bertscore(
     model_type: str,
     batch_size: int = 8,
     rescale_with_baseline: bool = True,
+    backend: str = "evaluate",
+    device: str = "cpu",
 ) -> dict[str, Any]:
     evaluable = [record for record in records if record.get("answer") and record.get("ground_truth")]
     if not evaluable:
-        return {"records": [], "summary": {}}
+        return {"records": [], "summary": {}, "backend": backend}
 
     candidates = [record["answer"] for record in evaluable]
     references = [record["ground_truth"] for record in evaluable]
@@ -98,6 +203,8 @@ def evaluate_bertscore(
         model_type=model_type,
         batch_size=batch_size,
         rescale_with_baseline=rescale_with_baseline,
+        device=device,
+        backend=backend,
     )
 
     results: list[dict[str, Any]] = []
@@ -121,7 +228,14 @@ def evaluate_bertscore(
         record["bertscore_rescaled_f1"] = metrics["rescaled_f1"]
         results.append(metrics)
 
-    return {"records": results, "summary": _summarize(results), "model_type": model_type}
+    return {
+        "records": results,
+        "summary": _summarize(results),
+        "model_type": model_type,
+        "backend": backend,
+        "device": device,
+        "rescale_with_baseline": rescale_with_baseline,
+    }
 
 
 def _summarize(results: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
@@ -129,13 +243,16 @@ def _summarize(results: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
     summary: dict[str, dict[str, float]] = {}
     for pipeline in pipelines:
         items = [result for result in results if result["pipeline"] == pipeline]
+        avg_raw_f1 = _avg([item["raw_f1"] for item in items])
+        avg_rescaled_f1 = _avg([item["rescaled_f1"] for item in items])
         summary[pipeline] = {
             "avg_precision": _avg([item["precision"] for item in items]),
             "avg_recall": _avg([item["recall"] for item in items]),
-            "avg_raw_f1": _avg([item["raw_f1"] for item in items]),
-            "avg_rescaled_f1": _avg([item["rescaled_f1"] for item in items]),
-            "raw_f1_bonus_pass": _avg([item["raw_f1"] for item in items]) >= 0.88,
-            "rescaled_f1_bonus_pass": _avg([item["rescaled_f1"] for item in items]) >= 0.55,
+            "avg_raw_f1": avg_raw_f1,
+            "avg_rescaled_f1": avg_rescaled_f1,
+            "raw_f1_bonus_pass": avg_raw_f1 >= 0.88,
+            "rescaled_f1_bonus_pass": avg_rescaled_f1 >= 0.55,
+            "bonus_pass": avg_rescaled_f1 >= 0.55,
         }
     return summary
 

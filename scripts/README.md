@@ -12,11 +12,37 @@ Reproducible entrypoints for dataset creation, parsing, indexing, pipeline execu
 - `run_llm_only.py`
 - `run_basic_rag.py`
 - `run_graphrag.py`
-- `evaluate_answers.py`
-- `benchmark_all.py`
+- `run_benchmark.py`
+- `generate_eval_questions.py`
 
 For a fresh checkout with no local paper corpus, build Basic RAG with:
 
 ```bash
 python scripts/build_basic_rag.py --bootstrap-arxiv
 ```
+
+For the hackathon evaluation flow:
+
+```bash
+python - <<'PY'
+from evaluation.dataset import write_dataset_template
+write_dataset_template("evaluation/datasets/hackathon_eval.json", count=30)
+PY
+
+python scripts/run_benchmark.py \
+  --dataset evaluation/datasets/hackathon_eval.json \
+  --judge
+```
+
+This runs:
+
+- `llm-only`
+- `basic-rag`
+- `graphrag`
+
+and writes:
+
+- `evaluation/outputs/benchmark_results.json`
+- `evaluation/outputs/judge_results.json`
+- `evaluation/outputs/bertscore_results.json`
+- `evaluation/reports/summary_report.md`

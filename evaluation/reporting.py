@@ -47,7 +47,9 @@ def generate_markdown_report(
                 "hackathon_weighted_score",
                 "avg_token_reduction_pct_vs_llm_only",
                 "avg_total_latency_ms",
+                "avg_bertscore_raw_f1",
                 "avg_bertscore_rescaled_f1",
+                "avg_judge_correctness_pct",
                 "judge_pass_rate",
             ],
         ),
@@ -67,8 +69,19 @@ def generate_markdown_report(
         "",
     ]
     if bertscore_results:
+        lines.extend(
+            [
+                "### BERTScore Setup",
+                "",
+                f"- Backend: `{bertscore_results.get('backend', 'unknown')}`",
+                f"- Model: `{bertscore_results.get('model_type', 'unknown')}`",
+                f"- Rescaled with baseline: `{bertscore_results.get('rescale_with_baseline', True)}`",
+                "",
+            ]
+        )
         lines.extend(_bonus_lines("BERTScore", bertscore_results.get("summary", {})))
     if judge_results:
+        lines.extend(["### Judge Setup", "", "- Metric: pass rate plus average correctness percentage", ""])
         lines.extend(_bonus_lines("Judge", judge_results.get("summary", {})))
     lines.extend(
         [
@@ -162,10 +175,18 @@ def _bonus_lines(label: str, summary: dict[str, Any]) -> list[str]:
     lines = [f"### {label}", ""]
     for pipeline, values in summary.items():
         if "bonus_pass" in values:
-            lines.append(f"- {pipeline}: bonus pass = {values['bonus_pass']}")
+            extra = ""
+            if "pass_rate_pct" in values:
+                extra = (
+                    f", pass rate = {values.get('pass_rate_pct', 0.0):.1f}%, "
+                    f"avg correctness = {values.get('avg_correctness_pct', 0.0):.1f}%"
+                )
+            lines.append(f"- {pipeline}: bonus pass = {values['bonus_pass']}{extra}")
         elif "raw_f1_bonus_pass" in values:
             lines.append(
-                f"- {pipeline}: raw F1 pass = {values['raw_f1_bonus_pass']}, "
+                f"- {pipeline}: raw F1={values.get('avg_raw_f1', 0.0):.3f}, "
+                f"rescaled F1={values.get('avg_rescaled_f1', 0.0):.3f}, "
+                f"raw F1 pass = {values['raw_f1_bonus_pass']}, "
                 f"rescaled F1 pass = {values['rescaled_f1_bonus_pass']}"
             )
     return lines

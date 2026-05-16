@@ -1,0 +1,902 @@
+[
+  {
+    "id": "local-arxiv-001",
+    "question": "What does the paper with arXiv ID 1706.03762v7 propose or study?",
+    "ground_truth": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "1706.03762v7"
+    ],
+    "metadata": {
+      "title": "scholarly works.",
+      "paper_id": "1706.03762v7",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-002",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 1810.04805v2, according to its abstract?",
+    "ground_truth": "We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models (Peters et al., 2018a; Radford et al., 2018), BERT is designed to pretrain deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be ﬁnetuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial taskspeciﬁc architecture modiﬁcations. BERT is conceptually simple and empirically powerful.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "1810.04805v2"
+    ],
+    "metadata": {
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding Jacob Devlin Ming-Wei Chang Kenton Lee Kristina Toutanova",
+      "paper_id": "1810.04805v2",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-003",
+    "question": "What problem does the paper with arXiv ID 2004.04906v3 address, and what approach does it take?",
+    "ground_truth": "Open-domain question answering relies on efﬁcient passage retrieval to select candidate contexts, where traditional sparse vector space models, such as TF-IDF or BM25, are the de facto method. In this work, we show that retrieval can be practically implemented using dense representations alone, where embeddings are learned from a small number of questions and passages by a simple dualencoder framework. When evaluated on a wide range of open-domain QA datasets, our dense retriever outperforms a strong LuceneBM25 system greatly by 9%-19% absolute in terms of top-20 passage retrieval accuracy, and helps our end-to-end QA system establish new state-of-the-art on multiple open-domain QA benchmarks.1",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2004.04906v3"
+    ],
+    "metadata": {
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "paper_id": "2004.04906v3",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-004",
+    "question": "What does the paper with arXiv ID 2005.11401v4 propose or study?",
+    "ground_truth": "Large pre-trained language models have been shown to store factual knowledge in their parameters, and achieve state-of-the-art results when ﬁne-tuned on downstream NLP tasks. However, their ability to access and precisely manipulate knowledge is still limited, and hence on knowledge-intensive tasks, their performance lags behind task-speciﬁc architectures. Additionally, providing provenance for their decisions and updating their world knowledge remain open research problems. Pretrained models with a differentiable access mechanism to explicit non-parametric memory have so far been only investigated for extractive downstream tasks.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2005.11401v4"
+    ],
+    "metadata": {
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "paper_id": "2005.11401v4",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-005",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2310.06825v1, according to its abstract?",
+    "ground_truth": "We introduce Mistral 7B, a 7–billion-parameter language model engineered for superior performance and efficiency. Mistral 7B outperforms the best open 13B model (Llama 2) across all evaluated benchmarks, and the best released 34B model (Llama 1) in reasoning, mathematics, and code generation. Our model leverages grouped-query attention (GQA) for faster inference, coupled with sliding window attention (SWA) to effectively handle sequences of arbitrary length with a reduced inference cost. We also provide a model fine-tuned to follow instructions, Mistral 7B – Instruct, that surpasses Llama 2 13B – chat model both on human and automated benchmarks.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2310.06825v1"
+    ],
+    "metadata": {
+      "title": "Mistral 7B",
+      "paper_id": "2310.06825v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-006",
+    "question": "What problem does the paper with arXiv ID 2605.07847v1 address, and what approach does it take?",
+    "ground_truth": "As user simulators are increasingly used for interactive training and evaluation of AI assistants, it is essential that they represent the diverse behaviors of real users. While existing works train user simulators to generate human-like responses, whether they capture the broad and heterogeneous distribution of real user behaviors remains an open question. In this work, we introduce a method to measure the distributional gap between real and simulated user behaviors, validated through a human study and ablations. Given a dataset of real and simulated conversations, our method extracts representations of user behavior from each conversation, quantizes them into discrete distributions via clustering, then computes divergence metrics.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ],
+    "metadata": {
+      "title": "Measuring and Mitigating the Distributional Gap Between Real and Simulated User Behaviors Shuhaib Mehri♠ Philippe Laban♢ Sumuk Shashidhar♠ Marwa Abdulhai⋆ Sergey Levine⋆ Michel Galley♢",
+      "paper_id": "2605.07847v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-007",
+    "question": "What does the paper with arXiv ID 2605.06901v1 propose or study?",
+    "ground_truth": "Large Language Models (LLMs) are increasingly shaping the private and professional lives of users, with numerous applications in business, education, finance, healthcare, law, and science. With this rise in global influence comes greater urgency to build, evaluate, and deploy these systems in a manner that prioritizes not only technical capabilities but also human priorities. This work presents a framework for developing HumanCentered Large Language Models (HCLLMs), which integrates perspectives from Natural Language Processing (NLP), Human-Computer Interaction (HCI), and responsible AI. Considering the ethics, economics, and technical objectives of language modeling, we argue that model developers need to address human concerns, preferences, values, and goals, not only during a cursory post-training stage, but rather with rigor and care…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.06901v1"
+    ],
+    "metadata": {
+      "title": "Reflections and New Directions for Human-Centered Large Language Models",
+      "paper_id": "2605.06901v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-008",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.06903v1, according to its abstract?",
+    "ground_truth": "Large language models are deeply embedded in everyday writing workflows, making reliable AI-generated text detection important for academic integrity, content moderation, and provenance tracking. In practice, however, a detector must do more than achieve high aggregate AUROC on clean, in-distribution human and AI text: it should remain robust to attacks and adversarial rewrites, transfer to new and unseen generators and writing domains, and operate at low false-positive rates (FPR). Most existing detectors optimize a single AI/Human objective, which gives the representation little incentive to learn generator, attack, or domain structure once the binary task becomes saturated. We introduce MELD (Multi-Task Equilibrated Learning Detector), a deployable detector for AI-generated text that enriches binary detection with auxiliary supervisio…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.06903v1"
+    ],
+    "metadata": {
+      "title": "Detector for AI-Generated Text Chenjun Li1,2 Cheng Wan1,2",
+      "paper_id": "2605.06903v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-009",
+    "question": "What problem does the paper with arXiv ID 2605.06914v1 address, and what approach does it take?",
+    "ground_truth": "Recent methods expose intra-request parallelism in LLM outputs, allowing independent branches to decode concurrently. Existing serving systems execute these branches eagerly or under fixed caps. We show that both are brittle: eager admission inflates the shared decode step, degrading co-batched requests in serial stages, while conservative fixed caps forgo the throughput that motivated exposing branches in the first place. We call the excess step latency caused by admitted branches the branch externality and show that the safe width depends on batch composition, context lengths, and accumulated slack, all of which change continuously over a workload trace.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.06914v1"
+    ],
+    "metadata": {
+      "title": "Regulating Branch Parallelism in LLM Serving Swapnil Gandhi1 Siva Hari2 William J. Dally1,2 Christos Kozyrakis1,2",
+      "paper_id": "2605.06914v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-010",
+    "question": "What does the paper with arXiv ID 2605.06940v1 propose or study?",
+    "ground_truth": "Annotation automation via Large Language Models (LLMs) is the core approach for scaling NLP datasets; however, LLM behavior with respect to closed-set instructions in low-resource languages has not been well studied. We present MultiSoc4D, a Bengali social media dataset benchmark, which contains 58K+ social media comments from six sources annotated along four dimensions: category, sentiment, hate speech, and sarcasm. By employing a structured pipeline where ChatGPT, Gemini, Claude, and Grok individually annotate separate partitions, while sharing a common validation set of 20%, we diagnose LLM behavior systematically. We discover a prevalent phenomenon called “instruction-induced label collapse”, wherein LLMs show a systematic preference towards fallback labels (Other, Neutral, No), leading to high agreement rates but under-detection of…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.06940v1"
+    ],
+    "metadata": {
+      "title": "MultiSoc-4D: A Benchmark for Diagnosing Instruction-Induced Label Collapse in Closed-Set LLM Annotation of Bengali Social Media",
+      "paper_id": "2605.06940v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-011",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.06963v1, according to its abstract?",
+    "ground_truth": "This demo paper describes the development of the AI Teaching & Learning Assistant, a modular Moodle plugin that leverages RetrievalAugmented Generation (RAG) to deliver highquality, hallucination-free education. The system employs a dual-centric design, providing students with interactive, Socratic-based tutoring and educators with a ”Human-in-the-loop” workspace for supervised content generation. By grounding Large Language Model (LLM) responses in teacher-provided materials, the assistant addresses the risks of misinformation while encouraging deep conceptual mastery. Evaluation via the Ragas (LLM-as-a-Judge) framework and a preliminary user study confirms its effectiveness, achieving faithfulness scores up to 0.97 and a 4.00/5.00 recommendation rate.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.06963v1"
+    ],
+    "metadata": {
+      "title": "From Surface Learning to Deep Understanding: A Grounded AI Tutoring System for Moodle",
+      "paper_id": "2605.06963v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-012",
+    "question": "What problem does the paper with arXiv ID 2605.06978v1 address, and what approach does it take?",
+    "ground_truth": "Skill-augmented agents increasingly rely on large reusable skill libraries, but retrieving relevant skills is not the same as presenting usable context. Existing methods typically return atomic skills or dependency-aware bundles whose internal roles remain implicit, leaving the agent to infer the execution entry point, support skills, visible requirements, and failure-avoidance guidance. We introduce Group of Skills (GOSKILLS), an inference-time group-structured retrieval method that changes the agent-facing retrieval object from a flat skill list to a compact, rolelabeled execution context. GOSKILLS builds anchor-centered skill groups from a typed skill graph, expands support groups through a group graph, bottlenecks the selected group plan into a bounded set of atomic skill payloads, and renders a fixed execution contract with START, S…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.06978v1"
+    ],
+    "metadata": {
+      "title": "Group of Skills: Group-Structured Skill Retrieval for Agent Skill Libraries",
+      "paper_id": "2605.06978v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-013",
+    "question": "What does the paper with arXiv ID 2605.07001v1 propose or study?",
+    "ground_truth": "Architectural code smells erode software maintainability and are costly to repair manually, yet unlike localized bugs, they require cross-module reasoning about design intent that challenges both developers and automated tools. While large language model agents excel at bug fixing and code-level refactoring, their ability to repair architectural code smells remains unexplored. We present the first empirical evaluation of LLM agents on architectural code smell repair. We contribute SmellBench, a task orchestration framework that incorporates smell-type-specific optimized prompts and supports iterative multi-step execution, together with a scoring methodology that separately evaluates repair effectiveness, false positive identification, and net codebase impact.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07001v1"
+    ],
+    "metadata": {
+      "title": "SmellBench: Evaluating LLM Agents on Architectural Code Smell Repair Ion George Dinu",
+      "paper_id": "2605.07001v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-014",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07040v1, according to its abstract?",
+    "ground_truth": ". Large language models (LLMs) are widely used for tutoring, feedback generation, and content creation, but their broad pretraining makes them hard to constrain and poor substitutes for controllable learners. Educational systems often require inspectable and editable knowledge states: educators want to know what a system assumes the learner knows, and learners benefit when the system can justify actions in terms of explicit skills, misconceptions, and strategies. Inspired by cognitive architectures, we propose Cognitive Agent Compilation (CAC), a framework that uses a strong teacher LLM to compile problem-solving knowledge into an explicit target agent.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07040v1"
+    ],
+    "metadata": {
+      "title": "Cognitive Agent Compilation for Explicit Problem Solver Modeling",
+      "paper_id": "2605.07040v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-015",
+    "question": "What problem does the paper with arXiv ID 2605.07053v1 address, and what approach does it take?",
+    "ground_truth": "Benchmarks like GSM8K are popular measures of mathematical reasoning, but leaderboard gains can overstate true capability due to memorization of fixed test sets. Most robustness variants apply surface-level perturbations (paraphrases, renamings, number swaps, distractors) that largely preserve the underlying facts, and static releases can themselves become memorization targets over time. We introduce GSM-SEM, a reusable and stochastic framework for generating semantically diverse benchmark variants with substantially higher semantic variance than prior approaches. GSMSEM perturbs problem statements by modifying entities, attributes, and/or relationships, frequently altering underlying facts and requiring models to recompute solutions under new conditions, while constraining generation to preserve the original calculations/answer and appr…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07053v1"
+    ],
+    "metadata": {
+      "title": "GSM-SEM: Benchmark and Framework for Generating Semantically Variant Augmentations",
+      "paper_id": "2605.07053v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-016",
+    "question": "What does the paper with arXiv ID 2605.07058v1 propose or study?",
+    "ground_truth": "Real-world clinical diagnosis is a complex process in which the doctor is required to obtain information from both interaction with the patient and conducting medical exams. Additionally, the doctor needs to adapt to different patient personas, as well as noisy and incomplete information that can happen at any time during the process. However, existing benchmarks for medical LLMs and methods for automatic diagnosis largely simplify this process by reducing it to single-turn question answering, noise-free conversations, or sequential exam making, etc., ignoring the interactive and uncertain nature of clinical diagnosis. In this paper, we aim to address this gap by formalizing clinical diagnosis as a Partially Observable Markov Decision Process (POMDP) with three action types: questioning the patient, ordering medical exams as tool calls,…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07058v1"
+    ],
+    "metadata": {
+      "title": "and Diagnose in Noisy Clinical Environments",
+      "paper_id": "2605.07058v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-017",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07068v1, according to its abstract?",
+    "ground_truth": "The LLM Wiki pattern—to compile and provide domain knowledge into a persistent artifact and serve it to LLMs via KV cache inference—promises context access at sub-second latency with zero retrieval failure. Realizing this requires solving the compilation gap: LLM-compilation distilling raw documents into a wiki without catastrophically discarding critical facts. We characterize this gap across 17 RepLiQA domains (6,800 questions): we observe that full-context KV cache inference outperforms RAG on curated knowledge (4.38 vs. 4.08/5, 7.3× faster TTFT) but degrades below RAG at scale due to attention dilution, and blind compilation fails entirely (2.14–2.32 vs.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07068v1"
+    ],
+    "metadata": {
+      "title": "Iterative Knowledge Compilation for LLM Wiki Systems Juan M. Huerta Zinnia Tech Solutions 600 Steamboat Road",
+      "paper_id": "2605.07068v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-018",
+    "question": "What problem does the paper with arXiv ID 2605.07076v1 address, and what approach does it take?",
+    "ground_truth": "Large language models (LLMs) increasingly receive information as streams of passages, conversations, and long-context workflows. While longer context windows expose more evidence, they do not ensure that useful information is preserved and reused. We study continual context consolidation: writing current context into model weights while limiting interference with previously consolidated information. We propose Self-Consolidating Language Models (SCoL), a post-training framework in which, given current context, an LLM learns to generate textual update instructions specifying which of its own Transformer layers should be updated.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07076v1"
+    ],
+    "metadata": {
+      "title": "Self-Consolidating Language Models: Continual Knowledge Incorporation from Context Zekun Wang∗ Anant Gupta∗ Zihan Dong Christopher J. MacLellan",
+      "paper_id": "2605.07076v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-019",
+    "question": "What does the paper with arXiv ID 2605.07102v1 propose or study?",
+    "ground_truth": "Evaluating literary quality requires assessing interpretive dimensions such as cultural representation, emotional depth, and philosophical sophistication that resist straightforward computational measurement. We introduce SAGE, a hierarchical evaluation framework that decomposes literary quality into ontology-grounded interpretive dimensions assessed through structured large language model evaluation with multi-round iterative reflection and independent validation. We validate the framework on 100 short stories (50 canonical works, 30 pulp fiction, 20 LLM-generated narratives) across three analytical layers (cultural, emotionalpsychological, existential-philosophical) using dual-mode assessment. Across 600 evaluations, the framework achieves 98.8% score convergence and greater than 94% interrater agreement, with near-perfect mode invaria…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07102v1"
+    ],
+    "metadata": {
+      "title": "through Ontology-Grounded Interpretive Dimensions Tianyu Wang",
+      "paper_id": "2605.07102v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-020",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07106v1, according to its abstract?",
+    "ground_truth": "Multimodal Large Language Models (MLLMs) have made remarkable progress on vision-language reasoning, yet most methods still compress visual evidence into discrete textual thoughts, creating an information bottleneck for fine-grained perception. Recent latent visual reasoning methods attempt to reason in continuous hidden states, but we find that they suffer from insufficient manifold compatibility: latent trajectories drift away from pretrained reasoning circuits, collapse into instance-agnostic patterns, and are often bypassed during answer generation. To address these issues, we propose RIS (Retrieve, Integrate, and Synthesize), a spatial-semantic grounded framework that develops latent reasoning as a compatible extension of pretrained MLLM computation. We first construct a step-wise grounded reasoning dataset with bounding boxes and r…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07106v1"
+    ],
+    "metadata": {
+      "title": "2School of Software Engineering,",
+      "paper_id": "2605.07106v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-021",
+    "question": "What problem does the paper with arXiv ID 2605.07111v1 address, and what approach does it take?",
+    "ground_truth": "Recent literature on fine-tuning Large Language Models highlights a fundamental debate. While Full Fine-Tuning (FFT) provides the representational plasticity required for high-entropy knowledge injection, Low-Rank Adaptation (LoRA) can match or surpass FFT performance because many tasks only require updates in a low-rank space and benefit from LoRA’s additional regularization. Through empirical evaluation across diverse tasks (SQL, Medical QA, and Counterfactual Knowledge) and varying language models (Gemma-3-1B, Qwen2.5-1.5B, and Qwen2.5-3B), we verify both trends and demonstrate that relying solely on either static architecture is structurally limited. To address this challenge, we propose a Mixture of LoRA and Full (MoLF) Fine-Tuning, a unified framework that enables continuous navigation between both training regimes.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07111v1"
+    ],
+    "metadata": {
+      "title": "Beyond LoRA vs. Full Fine-Tuning: Gradient-Guided Optimizer Routing for LLM Adaptation",
+      "paper_id": "2605.07111v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-022",
+    "question": "What does the paper with arXiv ID 2605.07127v1 propose or study?",
+    "ground_truth": "Modern large language models (LLMs) can find a needle in a haystack (locating a single relevant fact buried among hundreds of thousands of irrelevant tokens) with near-saturated accuracy, yet fail to retrieve the last few items in a short list. We call this failure the Position Curse. For instance, even in a two-line code snippet, Claude Opus 4.6 misidentifies the second-to-last line most of the time. To characterize this failure, we evaluated two complementary queries: given a position in a sequence (of letters or words), retrieve the corresponding item; and given an item, return its position.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07127v1"
+    ],
+    "metadata": {
+      "title": "The Position Curse: LLMs Struggle to Locate the Last Few Items in a List Zhanqi Zhang∗ UC San Diego",
+      "paper_id": "2605.07127v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-023",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07134v1, according to its abstract?",
+    "ground_truth": "Web agents perceive web pages through an observation space, yet its granularity has remained an underexamined design choice. Existing work treats observation at the same element-level granularity as the action space, leaving the page’s functional organization implicit and forcing the agent to infer it from element-level signals at every step. We argue observation should instead operate at the granularity of functional regions, parts of the page that each serve a distinct purpose. We propose Region4Web, a framework that reorganizes the AXTree into functional regions through hierarchical decomposition and semantic abstraction, exposing the page’s functional organization as the basis for page state understanding.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07134v1"
+    ],
+    "metadata": {
+      "title": "Region4Web: Rethinking Observation Space Granularity for Web Agents Donguk Kwon",
+      "paper_id": "2605.07134v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-024",
+    "question": "What problem does the paper with arXiv ID 2605.07139v1 address, and what approach does it take?",
+    "ground_truth": "When distilling reasoning from large language models (LLMs) into smaller ones, teacher rationales for similar problems often vary wildly in structure and strategy. Like a chef who makes the same dish differently each time, this inconsistency burdens the student with noisy supervision that is hard to internalize. We propose Distillation through Reasoning Path Compression (D-RPC), which constrains the teacher to follow a compact, dynamically maintained bank of reusable high-level reasoning paths. For each training question, D-RPC retrieves the most relevant path and conditions the teacher to follow it, producing rationales that are consistent across similar problems yet diverse enough to cover different problem types.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07139v1"
+    ],
+    "metadata": {
+      "title": "Structural Rationale Distillation via Reasoning Space Compression Jialin Yang∗",
+      "paper_id": "2605.07139v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-025",
+    "question": "What does the paper with arXiv ID 2605.07153v1 propose or study?",
+    "ground_truth": "Reinforcement learning (RL) has achieved remarkable success in LLM reasoning, but whether it can also improve direct recall of parametric knowledge remains an open question. We study this question in a controlled zero-shot, one-hop, closedbook QA setting with no chain-of-thought, training only on binary correctness rewards and applying fact-level train-test deduplication to ensure gains reflect improved recall rather than reasoning or memorization. Across three model families and multiple factual QA benchmarks, RL yields ∼27% average relative gains, surpassing both training- and inference-time baselines alike. Mechanistically, RL primarily redistributes probability mass over existing knowledge rather than acquiring new facts, moving correct answers from the low-probability tail into reliable greedy generations.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07153v1"
+    ],
+    "metadata": {
+      "title": "Parametric Knowledge in LLMs Wanli Yangè Hongyu Zang Junwei Zhang Wenjie Shi Du Suè Jingang Wang Xueqi Chengè Fei Sunè #",
+      "paper_id": "2605.07153v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-026",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07158v1, according to its abstract?",
+    "ground_truth": "Vector search and retrieval-augmented generation (RAG) rest on the assumption that cosine similarity between text embeddings reflects conceptual relatedness. We measure where this assumption breaks. We build an augmented citation graph over 3.58M scientific papers and partition it via Leiden CPM at two granularities: sub-field (L1) and research-agenda (L2, hierarchical inside each L1). Four state-ofthe-art embeddings (Gemini, Qwen3-8B, Qwen3-0.6B, SPECTER2) clear the L1 bar reasonably (45–52% top-10 same-rate) but stop working at L2: only 15–21% of top-10 neighbors share the query’s research agenda.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07158v1"
+    ],
+    "metadata": {
+      "title": "Topic Is Not Agenda: A Citation-Community Audit of Text Embeddings Junseon Yoo Pluto Labs",
+      "paper_id": "2605.07158v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-027",
+    "question": "What problem does the paper with arXiv ID 2605.07164v1 address, and what approach does it take?",
+    "ground_truth": "Self-evolving agents improve by accumulating and reusing experience from past interactions. Existing work has largely focused on how experience is constructed, represented, and updated, while paying less attention to how experience should be used during runtime decision-making. As a result, most agents rely on rigid usage strategies, either injecting experience once at initialization or at every step, without considering whether it is needed for the current decision. This paper studies experience utilization as a critical design dimension of self-evolving agents.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07164v1"
+    ],
+    "metadata": {
+      "title": "Rethinking Experience Utilization in Self-Evolving Language Model Agents",
+      "paper_id": "2605.07164v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-028",
+    "question": "What does the paper with arXiv ID 2605.07201v1 propose or study?",
+    "ground_truth": "This paper describes our system for the EEUCA 2026 Shared Task on Understanding Toxic Behavior in Gaming Communities. The task involves classifying World of Tanks chat messages into six toxicity categories: Non-toxic, Insults/Flaming, Other Offensive, Hate/Harassment, Threats, and Extremism. We explore multiple approaches including encoderbased models, instruction-tuned LLMs with LoRA fine-tuning, hierarchical classification, one-vs-rest strategies, and various ensemble methods. Our best system combines Llama 3.1 8B with carefully calibrated 5% synthetic data augmentation, achieving an F1-macro score of 0.6234 on the test set, placing 4th out of 35 participating teams.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07201v1"
+    ],
+    "metadata": {
+      "title": "Data Augmentation for Multi-Class Toxicity Detection in Gaming Chat Srikar Kashyap Pulipaka",
+      "paper_id": "2605.07201v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-029",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07209v1, according to its abstract?",
+    "ground_truth": "We introduce a proxy-analyzer framework for detecting hallucinations in large language models. Instead of looking inside the generating model, our system reads already-generated text through a small locally hosted open-weight model and spots hallucinations using the reader’s own internal activations. This works just as well when the generator is a closed API like GPT-4 as when it is any openweight model. We built eighteen features grounded in how transformers process text, covering residual stream norms, per-head source-document attention, entropy, MLP activations, logit-lens trajectories, and three new token-level grounding statistics.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07209v1"
+    ],
+    "metadata": {
+      "title": "Hallucination Detection via Activations of Open-Weight Proxy Analyzers Akshita Singh∗ Khoury College of Computer Sciences",
+      "paper_id": "2605.07209v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-030",
+    "question": "What problem does the paper with arXiv ID 2605.07210v1 address, and what approach does it take?",
+    "ground_truth": "PromptReps showed that an autoregressive language model can be used directly as a retriever by prompting it to generate dense and sparse representations of a query or passage. Extending this to multiple representatives is inefficient for autoregressive models, since tokens must be generated sequentially, and prior multi-token variants did not reliably improve over single-token decoding. We show that the bottleneck is sequential generation, not the multi-token idea itself. DiffRetriever is a representative- token retriever for diffusion language models: it appends K masked positions to the prompt and reads all K in a single bidirectional forward pass.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07210v1"
+    ],
+    "metadata": {
+      "title": "DiffRetriever: Parallel Representative Tokens for Retrieval with Diffusion Language Models Shuai Wang1 Yu Yin1 Shengyao Zhuang1 Bevan Koopman1,2 Guido Zuccon1",
+      "paper_id": "2605.07210v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-031",
+    "question": "What does the paper with arXiv ID 2605.07234v1 propose or study?",
+    "ground_truth": "Large language models (LLMs) support long-context inference but suffer from substantial memory and runtime overhead due to Key-Value (KV) Cache growth. Existing KV Cache eviction methods primarily rely on local attention weights, neglecting the influence of value representations, output projection, and inter-head interactions. In this work, we reformulate KV Cache eviction from a conventional head-wise, weight-averaging approach into an output-aware, layer-wise matrix multiplication approximation problem. We introduce LaProx, a novel eviction strategy that explicitly models the multiplicative interaction between attention maps and projected value states to accurately quantify token contributions while accounting for inter-head dependencies.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07234v1"
+    ],
+    "metadata": {
+      "title": "Reformulating KV Cache Eviction Problem for Long-Context LLM Inference Tho Mai KAIST Daejeon, South Korea",
+      "paper_id": "2605.07234v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-032",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07243v1, according to its abstract?",
+    "ground_truth": "Speculative decoding accelerates LLM inference by drafting a tree of candidate continuations and verifying it in one target forward. Existing drafters fall into two camps with opposite weaknesses. Autoregressive drafters such as EAGLE3 preserve dependence along each draft path but call the drafter once per tree depth, making drafting a non-trivial share of per-iteration latency. Parallel drafters cut drafter calls by predicting multiple future positions in one forward, but each position is predicted without seeing the others, producing paths the verifier rejects.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07243v1"
+    ],
+    "metadata": {
+      "title": "with Dynamic Tree Drafting Weijie Shi1 Qiang Xu2 Fan Deng2 Yaguang Wu2 Jiarun Liu2 Yehong Xu1 Hao Chen1 Jia Zhu3 Jiajie Xu4 Xiangjun Huang2 Jian Yang2 Xiaofang Zhou1",
+      "paper_id": "2605.07243v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-033",
+    "question": "What problem does the paper with arXiv ID 2605.07244v1 address, and what approach does it take?",
+    "ground_truth": "We introduce Mutual Reinforcement Learning, a framework for concurrent RL post-training in which heterogeneous LLM policies exchange typed experience while keeping separate parameters, objectives, and tokenizers. The framework combines a Shared Experience Exchange (SEE), Multi-Worker Resource Allocation (MWRA), and a Tokenizer Heterogeneity Layer (THL) that retokenizes text and aligns token-level traces across incompatible vocabularies. This substrate makes the experience-sharing design question operational across model families. We instantiate three controlled probes on top of GRPO: data-level rollout sharing via Peer Rollout Pooling (PRP), value-level advantage sharing via Cross-Policy GRPO Advantage Sharing (XGRPO), and outcome-level success transfer via SuccessGated Transfer (SGT).",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07244v1"
+    ],
+    "metadata": {
+      "title": "Experience Sharing in Mutual Reinforcement Learning for Heterogeneous Language Models",
+      "paper_id": "2605.07244v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-034",
+    "question": "What does the paper with arXiv ID 2605.07248v1 propose or study?",
+    "ground_truth": "Beyond training-time optimization, scaling test-time computation has emerged as a key paradigm to extend the reasoning capabilities of Large Language Models (LLMs). However, most existing methods adopt a rigid Planningbefore-Trial (PbT) policy, which inefficiently allocates test-time compute by incurring planning overhead even on directly solvable problems. We propose Planning-after-Trial (PaT), an adaptive policy for code generation that invokes a planner only upon verification failure. This adaptive policy naturally enables a heterogeneous model configuration: a cost-efficient model handles generation attempts, while a powerful model is reserved for targeted planning interventions.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07248v1"
+    ],
+    "metadata": {
+      "title": "PaT: Planning-after-Trial for Efficient Test-Time Code Generation",
+      "paper_id": "2605.07248v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-035",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07268v1, according to its abstract?",
+    "ground_truth": "Multiple-choice reasoning benchmarks face dual challenges: rapid saturation from advancing models and data contamination that undermines static evaluations. Adhoc hardening methods (paraphrasing, perturbation) attempt to increase difficulty but sacrifice logical validity for surface complexity, falling short to challenge advanced reasoning models. We present LogiHard, a formal framework that deterministically transforms 0-order selection into 2-order logical judgment, which significantly increases the thinking overhead and reasoning steps. The framework integrates Item Response Theory (IRT) for computerized adaptive testing (CAT), enabling precise difficulty control with fewer questions than static benchmarks.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07268v1"
+    ],
+    "metadata": {
+      "title": "From 0-Order Selection to 2-Order Judgment:",
+      "paper_id": "2605.07268v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-036",
+    "question": "What problem does the paper with arXiv ID 2605.07269v1 address, and what approach does it take?",
+    "ground_truth": "Indirect prompt injection remains a persistent weakness in retrieval-augmented and toolusing LLM systems, and the problem becomes harder to characterise in multilingual settings. We present MIPIAD, a defense framework evaluated on English and Bangla that combines a sequence classifier fine-tuned from Qwen2.5-1.5B via LoRA (XLPID), TF-IDF lexical features, and validation-tuned ensembling through late fusion, stacking, and gradient boosting. The framework is evaluated on a synthetic benchmark built from BIPIA (Yi et al., 2023) templates spanning five task families—email, table, QA, abstract, and code— comprising over 1.43 million generated samples, with train and test splits using mutually exclusive attack categories. Across the experiments, lexical signals prove unexpectedly strong (TF-IDF+SVM F1=0.77), and the hybrid XLPID+TF-IDF ensembl…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07269v1"
+    ],
+    "metadata": {
+      "title": "with Qwen–TF-IDF Hybrid and Meta-Ensemble Learning Al Muhit Muhtadi1 and Mostafa Rifat Tazwar2",
+      "paper_id": "2605.07269v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-037",
+    "question": "What does the paper with arXiv ID 2605.07305v1 propose or study?",
+    "ground_truth": "Most existing LLM diagnoses are evaluated on static, single-turn settings where complete patient information is provided upfront, an oversimplification of real clinical practice. We study active diagnosis: the real-life clinical process of starting from initial observation, ordering tests, interpreting results, and updating a differential diagnosis across multiple turns. Through systematic analysis, we identify three recurring failure modes in current LLMs — ungrounded test ordering, unreliable diagnostic update, and degraded multi-turn coherence — that together reveal a core deficit: existing medical training data teaches models to reason from complete information but not to act under evolving, partial evidence. To address this gap, we introduce MedAction, a tree-structured distillation pipeline that synthesizes diverse and high-quality…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07305v1"
+    ],
+    "metadata": {
+      "title": "LLMs Hsin-Ling Hsu1 Zizheng Wang2* Donghua Zhang3* Nai-Chia Chen1 Jerry Wang1 Jun-En Ding4 Chia-Hsuan Hsu5 Guoan Wang4 Feng Liu4 Fang-Ming Hung6 Chenwei Wu3† Liyue Shen3†",
+      "paper_id": "2605.07305v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-038",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07324v1, according to its abstract?",
+    "ground_truth": "—Backdoor attacks on language models pose a significant threat to AI safety, where models behave normally on most inputs but exhibit harmful behavior when triggered by specific patterns. Detecting such backdoors through mechanistic interpretability remains an open challenge. We investigate two sparse autoencoder architectures—Crosscoders and Differential SAEs (Diff-SAE)—for isolating backdoor-related features in fine-tuned models. Using a controlled SQL injection backdoor triggered by year-based context (“2024” triggers vulnerable code, “2023” triggers safe code), we evaluate both approaches across LoRA and full-rank fine-tuning regimes on SmolLM2-360M.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07324v1"
+    ],
+    "metadata": {
+      "title": "Activation Differences Reveal Backdoors: A Comparison of SAE Architectures Sachin Kumar LexisNexis* Raleigh, USA",
+      "paper_id": "2605.07324v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-039",
+    "question": "What problem does the paper with arXiv ID 2605.07345v1 address, and what approach does it take?",
+    "ground_truth": "Mean-pooled cosine similarity is the default metric for comparing neural representations across languages, modalities, and tasks. We establish that this metric is not length-invariant: under the anisotropy that characterizes modern transformer representations, mean-pooled cosine grows monotonically in sequence length, independent of representational content. Empirically, on HumanEvalPack across four code LLMs, the length ratio alone explains R2 = 0.52–0.75 of cross-language “Python proximity,” while AST depth and sharedtoken fraction add less than 3% of explained variance beyond length. Substituting Centered Kernel Alignment (CKA) reduces explained variance by 83% and reverses the sign of the length coefficient (βlen : +0.86 →−0.37).",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07345v1"
+    ],
+    "metadata": {
+      "title": "Mean-Pooled Cosine Similarity is Not Length-Invariant: Theory and Cross-Domain Evidence for a Length-Invariant Alternative Sibayan Mitra * 1 Dhruv Kumar * 1",
+      "paper_id": "2605.07345v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-040",
+    "question": "What does the paper with arXiv ID 2605.07395v1 propose or study?",
+    "ground_truth": "Efficient routing across multiple LLMs is central to cost-effective deployment, enabling better trade-offs between cost, latency, and quality. Prior work has attributed substantial routing headroom to an “unsolvability ceiling”: a non-trivial fraction of queries that no single model in the pool can solve correctly. In this paper, we present a large-scale study of multi-tier LLM routing with over 206,000 query-model pairs across six diverse benchmarks (MMLU, MedQA, HumanEval, MBPP, Alpaca, ShareGPT) using the Gemma 4 and Llama 3.1 model families. Evaluating with both LLM-as-a-judge and exact-match metrics, we show that a substantial portion of reported unsolvability stems from evaluation artifacts rather than fundamental model limitations.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07395v1"
+    ],
+    "metadata": {
+      "title": "Unsolvability Ceiling in Multi-LLM Routing: An Empirical Study of Evaluation Artifacts Saloni Garg",
+      "paper_id": "2605.07395v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-041",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07409v1, according to its abstract?",
+    "ground_truth": "Natural Language Processing is rapidly evolving into a primary instrument for Computational Social Science, with researchers increasingly using embeddings to measure latent constructs such as novelty, creativity, and bias. However, this transition faces a fundamental validity challenge: the “Proxy Presumption,” or the reliance on geometric properties (e.g., cosine distance) as direct measures of social concepts. We argue that without explicit validation, unsupervised representations remain entangled mixtures of the target construct (C) and confounding attributes (Z) like topic, style, and authorship. To bridge the gap between semantic embeddings and valid social measures, we introduce the Construct Validity Protocol (CVP).",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07409v1"
+    ],
+    "metadata": {
+      "title": "Measures",
+      "paper_id": "2605.07409v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-042",
+    "question": "What problem does the paper with arXiv ID 2605.07465v1 address, and what approach does it take?",
+    "ground_truth": "Instruction following is a fundamental capability of large language models (LLMs), yet continuously improving this capability remains challenging. Existing methods typically rely either on costly external supervision from humans or strong teacher models, or on self-play training with static-difficulty instructions that cannot evolve as the model’s capabilities improve. To address these limitations, we propose SEIF (Self-Evolving Reinforcement Learning for Instruction Following), a self-evolving framework for enhancing the instruction-following ability of LLMs. SEIF forms a closed self-evolution loop that improves the model’s instruction-following ability, where instruction difficulty evolution and model capability evolution reinforce each other.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07465v1"
+    ],
+    "metadata": {
+      "title": "for Instruction Following",
+      "paper_id": "2605.07465v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-043",
+    "question": "What does the paper with arXiv ID 2605.07507v1 propose or study?",
+    "ground_truth": "The exponential growth of academic publications has created an urgent need for automated tools capable of extracting structured knowledge from unstructured scientific texts. While large language models (LLMs) have demonstrated remarkable capabilities in natural language understanding and information extraction, existing solutions often require specialized infrastructure, programming expertise, or fine-tuned domain-specific models that create barriers for researchers in specialized fields. This paper presents TCMIIES (Traditional Chinese Medicine Information Intelligent Extraction System), a browser-based, zero-installation platform that leverages commercial LLM APIs to perform structured information extraction from academic literature. The system employs a novel schema-guided prompting framework with automatic system prompt generation, e…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07507v1"
+    ],
+    "metadata": {
+      "title": "TCMIIES: A Browser-Based LLM-Powered Intelligent Information Extraction System for Academic Literature [Hanqing Zhao]",
+      "paper_id": "2605.07507v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-044",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07522v1, according to its abstract?",
+    "ground_truth": "Accurate weather forecast reporting enables individuals and communities to better plan daily activities and agricultural operations. However, the current reporting process primarily relies on manual analysis of multi-source data, which leads to information overload and reduced efficiency. With the development of multimodal large language models (MLLMs), leveraging datadriven models to analyze and generate reports in the weather forecasting domain remains largely underexplored. In this work, we propose the Weather Forecasting Report (WFR) task and construct the first instruction-tuning dataset for this task, named WSInstruct, which covers 31 cities in America and 8 weather aspects.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07522v1"
+    ],
+    "metadata": {
+      "title": "Generation Zinan Zheng 1 Yang Liu * 2 Nuo Chen * 3 Juepeng Zheng 4 5 Hong Cheng 2 Jia Li 1",
+      "paper_id": "2605.07522v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-045",
+    "question": "What problem does the paper with arXiv ID 2605.07568v1 address, and what approach does it take?",
+    "ground_truth": "The Arrow-of-Time (AoT) task, determining whether a video plays forward or backward by recognizing temporal irreversibility, is one humans solve with near-perfect accuracy, yet frontier Video Large Language Models (Video-LLMs) perform only modestly above chance. This gap raises a key question: do visual backbones fail to encode temporal information, or does information bottleneck lie elsewhere in the Video-LLM architecture? We address this question by isolating the vision encoder from the Video-LLM and tracing temporal information across the encoder, projector, and LLM. We find that video-centric encoders with explicit temporal modeling encode strong temporal signals, whereas frame-centric encoders do not.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07568v1"
+    ],
+    "metadata": {
+      "title": "Tracing the Arrow of Time: Diagnosing Temporal Information Flow in Video-LLMs",
+      "paper_id": "2605.07568v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-046",
+    "question": "What does the paper with arXiv ID 2605.07579v1 propose or study?",
+    "ground_truth": "Reinforcement learning with verifiable rewards (RLVR) for Large Reasoning Models hinges on baseline estimation for variance reduction, but existing approaches pay a heavy price: PPO requires a policy-model scale critic, while GRPO needs multiple rollouts per prompt to keep its empirical group mean stable. We introduce POISE (Policy Optimization with Internal State Value Estimation), which obtains a baseline at negligible cost by using the policy model’s internal signals already computed during the policy forward pass. A lightweight probe predicts the expected verifiable reward from the hidden states of the prompt and generated trajectory, as well as token-entropy statistics, and is trained online alongside the policy. To preserve gradient unbiasedness despite using trajectory-conditioned features, we introduce a cross-rollout constructio…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07579v1"
+    ],
+    "metadata": {
+      "title": "Your Language Model is Its Own Critic: Reinforcement Learning with Value Estimation from Actor’s Internal States Yunho Choi∗ Graduate School of Data Science",
+      "paper_id": "2605.07579v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-047",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07600v1, according to its abstract?",
+    "ground_truth": "Recent methods for improving LLM mathematical reasoning, whether through MCTS-based test-time search or causal graph-guided knowledge injection, cannot identify which concepts causally contribute to a correct answer, as the observed association may be spurious, driven by confounders such as problem difficulty. We propose CIKA (Causal Intervention for Knowledge Activation), a framework that uses the LLM itself as an interventional simulator: a prompt sets the concept state to “mastered” and the correctness change estimates the causal effect. We formalize this quantity as an Interventional Capability Probe (ICP), which diagnoses whether the LLM can use a given concept—distinct from merely possessing knowledge. Because the intervention exogenously sets the concept state independently of problem difficulty, ICP separates confounding that obs…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07600v1"
+    ],
+    "metadata": {
+      "title": "Mathematical Reasoning via Intervention-Based Time-Series Causal Discovery Using LLMs as Concept Mastery Simulators Tsuyoshi Okita",
+      "paper_id": "2605.07600v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-048",
+    "question": "What problem does the paper with arXiv ID 2605.07613v1 address, and what approach does it take?",
+    "ground_truth": "Conversational news recommendation requires grounding each suggestion in a rapidly evolving article corpus while addressing implicit user intents that lack explicit retrievable keywords. To characterize this scenario, we identify 6 intent types from production dialogues: five are implicit and pose fundamental challenges to standard RAG pipelines, forming a critical retrieve-first bottleneck. To address these issues, we introduce intent-driven Semantic ID (SID) generation under a Generate-thenMatch paradigm. With two-stage training that consists of multi-task SID alignment and GPT4 Chain-of-Thought distillation, an LLM maps diverse intents to hierarchical SID prefixes, which are then fuzzy-matched to the current news pool to guarantee fully grounded recommendations.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07613v1"
+    ],
+    "metadata": {
+      "title": "Intent-Driven Semantic ID Generation for Grounded Conversational News Recommendation",
+      "paper_id": "2605.07613v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-049",
+    "question": "What does the paper with arXiv ID 2605.07622v1 propose or study?",
+    "ground_truth": "Gender bias in large language models has primarily been investigated for English, while languages with grammatical or morphological gender remain comparatively understudied. This paper investigates how and when gender information emerges in a Dutch BERT model trained from scratch, offering one of the first checkpoint-level analyses of bias formation in a Transformer architecture for a language combining overt morphological gender marking and generic forms. By extracting contextual embeddings throughout training, we construct dynamic gender subspaces using linear SVMs to trace when gender becomes linearly encoded and how this encoding evolves over time. Contextual embeddings are often assumed to integrate contextual cues robustly, allowing models to adjust the representation of a word depending on its more local usage.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07622v1"
+    ],
+    "metadata": {
+      "title": "Is She Even Relevant? When BERT Ignores Explicit Gender Cues Jonas Klein",
+      "paper_id": "2605.07622v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-050",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07635v1, according to its abstract?",
+    "ground_truth": ". Automated assistants for Grammatical Error Correction are now embedded in educational platforms serving millions of learners, yet three critical gaps remain in this domain: (1) latest-generation Large Language Models (LLMs) lack comprehensive evaluation on grammar correction tasks; (2) whether combining these LLMs improves correction quality is unexplored; and (3) the extent to which reference-based metrics underestimate GEC system performance has not been adequately quantified. In this study, first, we evaluate latest-generation LLMs on edit precision, fluency preservation, and meaning retention, showing fine-tuned GPT-4o achieves state-of-the-art performance across all three dimensions. Second, through grammatical error type analysis we demonstrate that individual LLMs exhibit highly similar error correction patterns (ρ = 0.947).",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07635v1"
+    ],
+    "metadata": {
+      "title": "Multi-Dimensional Evaluation of LLMs for Grammatical Error Correction⋆",
+      "paper_id": "2605.07635v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-051",
+    "question": "What problem does the paper with arXiv ID 2605.07646v1 address, and what approach does it take?",
+    "ground_truth": "While explicit reasoning trajectories enhance model interpretability, existing paradigms often rely on monolithic chains that lack intermediate verification, allowing early errors to cascade unchecked. This lack of modularity impedes granular auditing and compromises the epistemic trust required for high-stakes applications. We propose MAVEN (Multi-Agent Verification-Elaboration Network with In-Step Epistemic Auditing), a blackboard-inspired framework designed to transform LLMs into deliberate reasoners through explicit role-decoupling. At its core, MAVEN operationalizes an adversarial Skeptic-Researcher-Judge loop, simulating expert deliberation by functionally separating logical defense from factual grounding.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07646v1"
+    ],
+    "metadata": {
+      "title": "MAVEN: Multi-Agent Verification-Elaboration Network with In-Step Epistemic Auditing Yinsheng Yao",
+      "paper_id": "2605.07646v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-052",
+    "question": "What does the paper with arXiv ID 2605.07654v1 propose or study?",
+    "ground_truth": "Large Language Models often improve accuracy on reasoning tasks by sampling multiple Chain-of-Thought (CoT) traces and aggregating them with majority voting (MV), a test-time technique called self-consistency. When we truncate a CoT partway through and regenerate the remainder, we observe that traces with correct answers reproduce their original answer more often than traces with wrong answers. We use this difference as a reliability signal, prefix consistency, that weights each candidate answer by how often it reappears under regeneration. It requires no access to token log-probabilities or self-rating prompts.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07654v1"
+    ],
+    "metadata": {
+      "title": "Reliable Chain-of-Thought via Prefix Consistency Naoto Iwase1 Yuki Ichihara2,3 Mohammad Atif Quamar3 Junpei Komiyama3,4",
+      "paper_id": "2605.07654v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-053",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07660v1, according to its abstract?",
+    "ground_truth": "Reinforcement-learning-based post-training has become a central paradigm for improving the reasoning ability of large language models, yet the structure of its token-level learning signals remains poorly understood. This work studies such heterogeneity through attention entropy, a diagnostic that measures how concentrated or diffuse the contextual support is for each response token. We first show that token-level RL objectives are sparsely estimable: uniformly random 20% token subsets preserve a substantial fraction of full-token held-out performance, suggesting considerable redundancy in token-level updates. However, entropy-structured subsets exhibit markedly different optimization behavior.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07660v1"
+    ],
+    "metadata": {
+      "title": "Reveals Heterogeneous Signals in RL Reasoning",
+      "paper_id": "2605.07660v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-054",
+    "question": "What problem does the paper with arXiv ID 2605.07677v1 address, and what approach does it take?",
+    "ground_truth": "Tourism is a high-stakes setting for conversational recommender systems (CRS): a plausible-sounding suggestion can waste real money and trip time once a traveler acts on it. Existing CRS benchmarks primarily evaluate systems with a single Recall@k score over entity mentions, and tourism-specific resources add spatial or knowledge-graph context, yet none of them couple multi-turn recommendation with verbatim review-span evidence and rejection recovery. This leaves an evaluation gap for tourism recommendation that is simultaneously trustworthy, verifiable, and adaptive: recommend the right point of interest (POI) for multi-aspect preferences (such as cuisine, price, atmosphere, walking distance), justify each suggestion with verifiable evidence from prior visitors so the traveler can act without trial and error, and recover when the first…",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07677v1"
+    ],
+    "metadata": {
+      "title": "TRACE: Tourism Recommendation with Accountable Citation Evidence Zixu Zhao1 Sijin Wang2 Yu Hou3 Yuanyuan Xu1 Yufan Sheng1 Xike Xie4 Wenjie Zhang1 Won-Yong Shin3 Xin Cao1 1UNSW Sydney",
+      "paper_id": "2605.07677v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-055",
+    "question": "What does the paper with arXiv ID 2605.07699v1 propose or study?",
+    "ground_truth": "LLM-based agents are increasingly deployed for routine but consequential tasks in real-world domains, where their behavior is governed by inherently ambiguous domain policies that admit multiple valid interpretations. Despite the prevalence of such ambiguities in practice, existing agent benchmarks largely assume unambiguous, well-specified policies, leaving a critical evaluation gap. We introduce DRIP-R, a benchmark that systematically exploits real-world retail policy ambiguities to construct scenarios in which no single correct resolution exists. DRIP-R comprises a curated set of policy-ambiguous return scenarios paired with a realistic customer personas, a full-duplex conversational simulation with tool-calling capabilities and a multi-judge evaluation framework covering policy adherence, dialogue quality, behavioral alignment, and r…",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07699v1"
+    ],
+    "metadata": {
+      "title": "DRIP-R: A Benchmark for Decision-Making and Reasoning Under Real-World Policy Ambiguity in the Retail Domain Hsuvas Borkakoty∗",
+      "paper_id": "2605.07699v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-056",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07721v1, according to its abstract?",
+    "ground_truth": "Recurrent LLM architectures have emerged as a promising approach for improving reasoning, as they enable multi-step computation in the embedding space without generating intermediate tokens. Models such as Ouro perform reasoning by iteratively updating internal representations while retaining a standard Key-Value (KV) cache across iterations, causing memory consumption to grow linearly with reasoning depth. Consequently, increasing the number of reasoning iterations can lead to prohibitive memory usage, limiting the practical scalability of such architectures. In this work, we propose Memory-Efficient Looped Transformer (MELT), a novel architecture that decouples reasoning depth from memory consumption.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07721v1"
+    ],
+    "metadata": {
+      "title": "Compute from Memory in Looped Language Models Victor Conchello Vendrell∗ Arnau Padrés Masdemont∗ Niccolò Grillo Jordi Ros-Giralt Arash Behboodi Fabio Valerio Massoli",
+      "paper_id": "2605.07721v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-057",
+    "question": "What problem does the paper with arXiv ID 2605.07731v1 address, and what approach does it take?",
+    "ground_truth": "This report benchmarks the performance of ENGINEERING Ingegneria Informatica S.p.A.’s EngGPT2MoE-16B-A3B Large Language Model (LLM), a 16 billion parameter Mixture of Experts (MoE) model with 3 billion active parameters. Performance is investigated across a wide variety of representative LLM benchmarks1, including both international and Italian datasets, and is compared against comparably-sized open-source MoE and dense models. In comparison with popular Italian models, namely FastwebMIIA-7B, Minerva-7B-instruct-v1.0, Velvet-14B, and LLaMAntino-3-ANITA-8B, the new EngGPT2MoE-16B-A3B model performs as well or better on the international benchmarks: ARC-Challenge, GSM8K, AIME2024, AIME2025, MMLU, and HumanEval. It achieves the best performance for the longest context setting (32k) of the RULER benchmark.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07731v1"
+    ],
+    "metadata": {
+      "title": "Benchmarking EngGPT2-16B-A3B against Comparable Italian and International Open-source LLMs",
+      "paper_id": "2605.07731v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-058",
+    "question": "What does the paper with arXiv ID 2605.07748v1 propose or study?",
+    "ground_truth": "Diffusion Transformers (DiT) trained with flow matching in a VAE latent space have unified visual generation across images and videos. A natural next step toward a single architecture for both generation (visual synthesis) and understanding (text generation) is to apply this framework to language modeling. We propose TextLDM, which transfers the visual latent diffusion recipe to text generation with minimal architectural modification. A Transformer-based VAE maps discrete tokens to continuous latents, enhanced by Representation Alignment (REPA) with a frozen pretrained language model to produce representations effective for conditional denoising.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07748v1"
+    ],
+    "metadata": {
+      "title": "TextLDM: Language Modeling with Continuous Latent Diffusion Jiaxiu Jiang1 2∗ Jingjing Ren3∗ Wenbo Li1† Bo Wang1 Haoze Sun1 Yijun Yang1 Jianhui Liu1 Yanbing Zhang1 Shenghe Zheng1 Yuan Zhang1",
+      "paper_id": "2605.07748v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-059",
+    "question": "What is the main contribution or claim of the paper with arXiv ID 2605.07783v1, according to its abstract?",
+    "ground_truth": "Large language models (LLMs) achieve strong performance but remain costly to deploy in resource-constrained settings. Training small language models (SLMs) from scratch is computationally expensive, while conventional knowledge distillation requires repeated access to large teachers for different target sizes, leading to poor scalability. To solve these problems, we propose Chain-based Distillation (CBD), a scalable paradigm for efficiently initializing variable-sized language models. A sparse and limited sequence of intermediate models (called anchors) is constructed via stepwise distillation, forming a distillation chain that progressively transfers knowledge from the source LLMs.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07783v1"
+    ],
+    "metadata": {
+      "title": "Chain-based Distillation for Effective Initialization of Variable-Sized Small Language Models Boyu Shi 1 2 YiCheng Jiang 1 2 Chang Liu 1 2 Qiufeng Wang 1 2 Xu Yang* 1 2 Xin Geng* 1 2",
+      "paper_id": "2605.07783v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  },
+  {
+    "id": "local-arxiv-060",
+    "question": "What problem does the paper with arXiv ID 2605.07817v1 address, and what approach does it take?",
+    "ground_truth": "Human visual reasoning is governed by active vision, a process where metacognitive control drives top-down goal-directed attention, dynamically routing foveal focus toward task-relevant details while maintaining peripheral awareness of the global scene. In contrast, modern Vision-Language Models (VLMs) process visual information passively, relying on the static accumulation of massive token contexts that dilute spatial reasoning and induce linguistic hallucinations. Here we propose the following paradigm shift: GazeVLM, a multimodal architecture that internalizes this metacognitive oversight over its deployment of attention resources directly into the reasoning loop. By empowering the VLM to autonomously generate gaze tokens (<LOOK>), GazeVLM establishes a top-down control mechanism over its own causal attention mask.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07817v1"
+    ],
+    "metadata": {
+      "title": "GazeVLM: Active Vision via Internal Attention Control for Multimodal Reasoning Brown Ebouky",
+      "paper_id": "2605.07817v1",
+      "generator": "generate_local_eval_dataset.py"
+    }
+  }
+]

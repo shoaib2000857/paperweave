@@ -190,6 +190,52 @@ class GeminiLLMProvider:
             raise ProviderError("gemini", self.model, f"Request timed out for {self.base_url}.") from exc
 
 
+class HuggingFaceLLMProvider:
+    def __init__(self, model: str, api_key: str, temperature: float, max_tokens: int, timeout_seconds: float, force_json: bool = False):
+        self.model = model
+        self.api_key = api_key
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.timeout_seconds = timeout_seconds
+        self.force_json = force_json
+
+    async def generate(self, prompt: str) -> str:
+        try:
+            from huggingface_hub import AsyncInferenceClient
+        except ImportError as exc:
+            raise ProviderError("huggingface", self.model, "huggingface_hub is not installed. Add it to the environment first.") from exc
+
+        if not self.api_key:
+            raise ProviderError("huggingface", self.model, "Missing Hugging Face API token. Set JUDGE_API_KEY or HF_TOKEN.")
+
+        messages = [{"role": "user", "content": prompt}]
+        client = AsyncInferenceClient(model=self.model, token=self.api_key, timeout=self.timeout_seconds)
+        try:
+            kwargs: dict[str, object] = {
+                "messages": messages,
+                "temperature": self.temperature,
+                "max_tokens": self.max_tokens,
+            }
+            if self.force_json:
+                kwargs["response_format"] = {"type": "json_object"}
+            response = await client.chat_completion(**kwargs)
+            return response.choices[0].message.content or ""
+        except TypeError:
+            response = await client.chat_completion(
+                messages=messages,
+                temperature=self.temperature,
+                max_tokens=self.max_tokens,
+            )
+            return response.choices[0].message.content or ""
+        except httpx.ConnectError as exc:
+            raise ProviderError("huggingface", self.model, "Could not reach Hugging Face Inference API.") from exc
+        except httpx.TimeoutException as exc:
+            raise ProviderError("huggingface", self.model, f"Request timed out after {self.timeout_seconds:.0f}s.") from exc
+        except Exception as exc:
+            status = getattr(getattr(exc, "response", None), "status_code", None)
+            raise ProviderError("huggingface", self.model, str(exc), status) from exc
+
+
 def _response_error_text(response: httpx.Response) -> str:
     try:
         payload = response.json()
@@ -229,7 +275,7 @@ class LLMProviderFactory:
             api_key_env=config.api_key_env,
             temperature=0.0,
             max_tokens=512,
-            timeout_seconds=300.0,
+            timeout_seconds=config.timeout_seconds,
             force_json=True,
         )
 
@@ -256,6 +302,15 @@ class LLMProviderFactory:
             )
 
         api_key = os.getenv(api_key_env or "", "")
+        if provider in {"huggingface", "hf"}:
+            return HuggingFaceLLMProvider(
+                model=model,
+                api_key=api_key or os.getenv("HF_TOKEN", ""),
+                temperature=temperature,
+                max_tokens=max_tokens,
+                timeout_seconds=timeout_seconds,
+                force_json=force_json,
+            )
         if provider in {"gemini", "genai"}:
             return GeminiLLMProvider(
                 base_url=base_url or "https://generativelanguage.googleapis.com",

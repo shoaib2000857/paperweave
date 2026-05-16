@@ -1,0 +1,302 @@
+[
+  {
+    "id": "q001",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q002",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q003",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q004",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q005",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q006",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q007",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q008",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q009",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q010",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q011",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q012",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q013",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q014",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q015",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q016",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q017",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q018",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q019",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q020",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q021",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q022",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q023",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q024",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q025",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q026",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q027",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q028",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q029",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  },
+  {
+    "id": "q030",
+    "question": "Replace with a scientific QA benchmark question.",
+    "ground_truth": "Replace with the expected answer grounded in the benchmark corpus.",
+    "category": "lookup | comparison | multi_hop_reasoning | summarization | graph_traversal_reasoning",
+    "difficulty": "easy | medium | hard",
+    "sources": [
+      "paper-or-document-id"
+    ]
+  }
+]

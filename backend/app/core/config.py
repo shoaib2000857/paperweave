@@ -61,6 +61,7 @@ class JudgeConfig(BaseModel):
     model: str
     base_url: str | None = None
     api_key_env: str | None = None
+    timeout_seconds: float = 300.0
 
 
 class ProvidersConfig(BaseModel):
@@ -117,6 +118,8 @@ class TigerGraphConfig(BaseModel):
 
 class EvaluationConfig(BaseModel):
     bertscore_model: str
+    bertscore_backend: str = "evaluate"
+    bertscore_device: str = "cpu"
     judge_enabled: bool = True
     categories: list[str]
 
@@ -167,11 +170,23 @@ class Settings(BaseSettings):
         raw["providers"]["judge"]["provider"] = os.getenv("JUDGE_PROVIDER", raw["providers"]["judge"].get("provider", "gemini"))
         raw["providers"]["judge"]["model"] = os.getenv("JUDGE_MODEL", raw["providers"]["judge"].get("model", "gemini-2.5-flash"))
         raw["providers"]["judge"]["base_url"] = os.getenv("JUDGE_BASE_URL", raw["providers"]["judge"].get("base_url"))
+        raw["providers"]["judge"]["timeout_seconds"] = float(
+            os.getenv("JUDGE_TIMEOUT_SECONDS", str(raw["providers"]["judge"].get("timeout_seconds", 300.0)))
+        )
         raw.setdefault("graphrag", {})
         raw["graphrag"]["api_base"] = os.getenv("GRAPHRAG_API_BASE", raw["graphrag"].get("api_base", "http://localhost:8000"))
         raw["graphrag"]["top_k"] = int(os.getenv("GRAPHRAG_TOP_K", str(raw["graphrag"].get("top_k", 5))))
         raw["graphrag"]["num_hops"] = int(os.getenv("GRAPHRAG_NUM_HOPS", str(raw["graphrag"].get("num_hops", 2))))
         raw["graphrag"]["community_level"] = int(os.getenv("GRAPHRAG_COMMUNITY_LEVEL", str(raw["graphrag"].get("community_level", 2))))
+        raw.setdefault("evaluation", {})
+        raw["evaluation"]["bertscore_backend"] = os.getenv(
+            "BERTSCORE_BACKEND",
+            raw["evaluation"].get("bertscore_backend", "evaluate"),
+        )
+        raw["evaluation"]["bertscore_device"] = os.getenv(
+            "BERTSCORE_DEVICE",
+            raw["evaluation"].get("bertscore_device", "cpu"),
+        )
         return cls(**raw)
 
     def resolve_path(self, value: str) -> Path:

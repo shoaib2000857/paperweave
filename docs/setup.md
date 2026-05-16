@@ -34,6 +34,12 @@ Create the env file:
 cp .env.example .env
 ```
 
+Install or refresh the local package after dependency changes:
+
+```bash
+pip install -e .
+```
+
 ## 3. Ollama
 
 GraphRAG runs inside Docker, so Ollama must be reachable from both:
@@ -69,6 +75,7 @@ Notes:
 - `llama3.1:8b` is the safest fallback completion model
 - `qwen2.5:7b` also works if it is actually installed
 - `nomic-embed-text` is required for embeddings
+- The hackathon judge path uses Hugging Face hosted inference, so set `HF_TOKEN` or `JUDGE_API_KEY` in `.env`
 
 ## 4. PaperWeave Backend
 
@@ -104,6 +111,10 @@ From the `paperweave/` root:
 ```bash
 make graphrag-build
 make graphrag-up
+
+
+cd /media/shoaib/STUDYLINUX/Hackathons/TigerGraphRAG/paperweave/graphrag/tigergraph-graphrag
+docker compose -f docker-compose.paperweave.yml restart graphrag
 ```
 
 This starts:
@@ -259,6 +270,70 @@ Check one chunk’s text:
 ```bash
 docker exec tigergraph /bin/bash -lc 'printf "USE GRAPH PaperWeave\nRUN QUERY StreamChunkContent(\"2605.07847v1_chunk_10\")\n" | /home/tigergraph/tigergraph/app/cmd/gsql'
 ```
+
+## 16. Build the Evaluation Dataset
+
+The benchmark expects a JSON array with hand-written reference answers.
+
+You can start from the template:
+
+```bash
+python - <<'PY'
+from evaluation.dataset import write_dataset_template
+write_dataset_template("evaluation/datasets/hackathon_eval.json", count=30)
+PY
+```
+
+Each record should look like:
+
+```json
+{
+  "id": "q001",
+  "question": "What problem does FlashAttention solve?",
+  "ground_truth": "FlashAttention reduces memory traffic in exact attention by using an IO-aware tiled algorithm.",
+  "category": "lookup",
+  "difficulty": "easy",
+  "sources": ["2205.14135v1"]
+}
+```
+
+Recommended size:
+
+- `30-50` questions
+- mix of `lookup`, `comparison`, `multi_hop_reasoning`, and `summarization`
+
+## 17. Run the Hackathon Accuracy Benchmark
+
+The benchmark runs all three pipelines against the same ground-truth set and writes:
+
+- judge pass/fail plus correctness percentage
+- BERTScore raw F1
+- BERTScore rescaled F1
+- token, latency, hallucination, and retrieval metrics
+
+Use the Hugging Face judge path from the guide:
+
+```bash
+export HF_TOKEN=your_token_here
+python scripts/run_benchmark.py \
+  --dataset evaluation/datasets/hackathon_eval.json \
+  --judge
+```
+
+Outputs land in:
+
+- `evaluation/outputs/benchmark_results.json`
+- `evaluation/outputs/judge_results.json`
+- `evaluation/outputs/bertscore_results.json`
+- `evaluation/outputs/leaderboard.json`
+- `evaluation/reports/summary_report.md`
+
+Notes:
+
+- BERTScore now defaults to the Hugging Face `evaluate` backend
+- BERTScore is forced to `cpu` by default so benchmark runs do not die on consumer GPU VRAM limits
+- the judge defaults to `meta-llama/Llama-3.1-8B-Instruct` through `huggingface_hub`
+- if you want a local judge instead, set `JUDGE_PROVIDER=ollama` in `.env`
 
 ## 16. Check Chunk Embeddings
 

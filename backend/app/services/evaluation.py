@@ -21,7 +21,9 @@ class EvaluationService:
             [answer],
             [reference_answer],
             model_type=self.settings.evaluation.bertscore_model,
-            rescale_with_baseline=False,
+            rescale_with_baseline=True,
+            device=self.settings.evaluation.bertscore_device,
+            backend=self.settings.evaluation.bertscore_backend,
         )[0]
         judge_prompt = (
             "You are grading an answer for factual alignment.\n"
@@ -33,7 +35,7 @@ class EvaluationService:
         judge_text, _, _ = await self.llm_client.complete(judge_prompt)
         first_line = judge_text.strip().splitlines()[0].upper() if judge_text.strip() else "FAIL"
         return EvaluationResult(
-            bertscore_f1=bertscore["raw_f1"],
+            bertscore_f1=bertscore["rescaled_f1"],
             judge_pass=first_line.startswith("PASS"),
             judge_reasoning=judge_text.strip(),
         )

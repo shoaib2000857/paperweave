@@ -17,6 +17,7 @@ async def evaluate_with_judge(records: list[dict[str, Any]], judge_client: LLMCl
         record["judge_score"] = result["score"]
         record["judge_pass"] = result["pass"]
         record["judge_reasoning"] = result["reasoning"]
+        record["judge_correctness_pct"] = result["correctness_pct"]
         record["judge_factual_correctness"] = result.get("factual_correctness")
         record["judge_grounding"] = result.get("grounding")
         record["judge_completeness"] = result.get("completeness")
@@ -77,6 +78,7 @@ async def _judge_one(record: dict[str, Any], judge_client: LLMClient) -> dict[st
             "question_id": record["question_id"],
             "pipeline": record["pipeline"],
             "score": score,
+            "correctness_pct": max(0.0, min(100.0, (score / 5.0) * 100.0)),
             "pass": bool(parsed.get("pass")) and score >= 4.0 and hallucination_level <= 2.0,
             "factual_correctness": _as_float(parsed.get("factual_correctness"), score),
             "grounding": _as_float(parsed.get("grounding"), 0.0),
@@ -94,6 +96,7 @@ def _empty_result(record: dict[str, Any], reasoning: str) -> dict[str, Any]:
         "question_id": record["question_id"],
         "pipeline": record["pipeline"],
         "score": 0.0,
+        "correctness_pct": 0.0,
         "pass": False,
         "factual_correctness": 0.0,
         "grounding": 0.0,
@@ -123,6 +126,7 @@ def _summarize(results: list[dict[str, Any]]) -> dict[str, dict[str, float]]:
             "pass_rate": pass_rate,
             "pass_rate_pct": pass_rate * 100.0,
             "avg_score": _avg([item["score"] for item in items]),
+            "avg_correctness_pct": _avg([item["correctness_pct"] for item in items]),
             "hallucination_rate": _avg([item["hallucination_level"] for item in items]),
             "bonus_pass": pass_rate >= 0.90,
         }

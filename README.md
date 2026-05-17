@@ -564,6 +564,9 @@ python scripts/run_benchmark.py \
   --judge
 ```
 
+<img width="1400" height="1231" alt="paperweave_architecture (1)" src="https://github.com/user-attachments/assets/0fa05f46-a08f-4303-909f-1e277c0530b8" />
+
+
 ## Known Limitations
 
 - GraphRAG API startup still needs manual restart after first boot in many runs

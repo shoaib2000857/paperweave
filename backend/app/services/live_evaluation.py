@@ -56,17 +56,24 @@ class LiveEvaluationService:
         add_hallucination_metrics(records)
 
         bert_started = time.perf_counter()
-        bertscore_result = evaluate_bertscore(
-            records,
-            model_type=self.settings.evaluation.bertscore_model,
-            device=self.settings.evaluation.bertscore_device,
-            backend=self.settings.evaluation.bertscore_backend,
-        )
-        bertscore_available = True
+        try:
+            bertscore_result = evaluate_bertscore(
+                records,
+                model_type=self.settings.evaluation.bertscore_model,
+                device=self.settings.evaluation.bertscore_device,
+                backend=self.settings.evaluation.bertscore_backend,
+            )
+            bertscore_available = True
+        except Exception as exc:
+            bertscore_result = {"error": str(exc)}
+            bertscore_available = False
         bert_ms = (time.perf_counter() - bert_started) * 1000
 
         judge_started = time.perf_counter()
-        judge_result = await evaluate_with_judge(records, self.judge_client)
+        try:
+            judge_result = await evaluate_with_judge(records, self.judge_client)
+        except Exception as exc:
+            judge_result = {"error": str(exc)}
         judge_ms = (time.perf_counter() - judge_started) * 1000
 
         per_pipeline_eval_ms = (bert_ms + judge_ms) / max(len(records), 1)
@@ -115,7 +122,7 @@ class LiveEvaluationService:
                 "data": bertscore_result,
             },
             "judge": {
-                "available": True,
+                "available": not isinstance(judge_result, dict) or "error" not in judge_result,
                 "path": "live://judge",
                 "data": judge_result,
             },

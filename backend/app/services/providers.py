@@ -170,6 +170,10 @@ class GeminiLLMProvider:
         self.temperature = temperature
 
     async def generate(self, prompt: str) -> str:
+        headers = {
+            "x-goog-api-key": self.api_key,
+            "Content-Type": "application/json",
+        }
         payload = {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": self.temperature},
@@ -177,7 +181,8 @@ class GeminiLLMProvider:
         try:
             async with httpx.AsyncClient(timeout=120.0) as client:
                 response = await client.post(
-                    f"{self.base_url}/v1beta/models/{self.model}:generateContent?key={self.api_key}",
+                    f"{self.base_url}/v1beta/models/{self.model}:generateContent",
+                    headers=headers,
                     json=payload,
                 )
                 if response.is_error:
@@ -301,7 +306,7 @@ class LLMProviderFactory:
                 force_json=force_json,
             )
 
-        api_key = os.getenv(api_key_env or "", "")
+        api_key = self._resolve_api_key(provider=provider, api_key_env=api_key_env)
         if provider in {"huggingface", "hf"}:
             return HuggingFaceLLMProvider(
                 model=model,
@@ -332,3 +337,12 @@ class LLMProviderFactory:
             model=config.model,
             dimensions=config.dimensions,
         )
+
+    def _resolve_api_key(self, *, provider: str, api_key_env: str | None) -> str:
+        if api_key_env:
+            value = os.getenv(api_key_env, "")
+            if value:
+                return value
+        if provider in {"gemini", "genai"}:
+            return os.getenv("GEMINI_API_KEY", "") or os.getenv("GOOGLE_API_KEY", "")
+        return ""

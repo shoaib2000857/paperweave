@@ -1,113 +1,127 @@
-"""
-Cloud-based GraphRAG pipeline.
-
-Replaces the previous localhost TigerGraph microservice call with a
-stable, cloud-based flow:
-
-  1. Retrieve top-k chunks from the existing Chroma vector store.
-  2. Pass chunks to CloudGraphRAGService which:
-       a. Extracts entities + relationships via Gemini.
-       b. Queries TigerGraph Cloud (if credentials provided) or
-          a NetworkX in-memory graph as fallback.
-       c. Enriches context and generates the final answer via Gemini.
-
-Root-cause note:
-  The previous implementation called http://localhost:8000 (Dockerized
-  TigerGraph GraphRAG microservice). That service is not running in most
-  demo / hackathon environments, causing ConnectError → unavailable
-  placeholder answers and breaking the entire /ask/all endpoint when
-  asyncio.gather() propagated unrelated evaluation failures. This
-  pipeline is self-contained and crash-resistant.
-"""
-
 from __future__ import annotations
 
 import time
 from typing import Any
 
+import httpx
+
 from app.core.config import Settings
 from app.models.api import AskRequest, RetrievalInfo, SourceRecord
 from app.pipelines.base import BasePipeline
-from app.services.cloud_graphrag import CloudGraphRAGService, build_cloud_graphrag_service
 from app.services.llm import LLMClient
-from app.storage.rag_store import BasicRAGStore
 
 
 class GraphRAGPipeline(BasePipeline):
     pipeline_name = "graphrag"
 
-    def __init__(
-        self,
-        settings: Settings,
-        llm_client: LLMClient,
-        rag_store: BasicRAGStore,
-    ):
+    def __init__(self, settings: Settings, llm_client: LLMClient):
         self.settings = settings
         self.llm_client = llm_client
-        self.rag_store = rag_store
-        self._cloud: CloudGraphRAGService = build_cloud_graphrag_service(
-            graph_name=self.settings.graphrag.graph_name
-        )
 
     async def run(self, payload: AskRequest):
         started = time.perf_counter()
+        retrieval_start = time.perf_counter()
         top_k = payload.top_k or self.settings.graphrag.top_k
         num_hops = payload.num_hops or self.settings.graphrag.num_hops
-
-        # --- 1. Retrieve chunks from Chroma ---
-        retrieval_start = time.perf_counter()
+        answerquestion_body = {
+            "question": payload.question,
+            "method": "hybrid",
+            "method_params": {
+                "top_k": top_k,
+                "num_hops": num_hops,
+                "num_seen_min": 1,
+                "indices": ["DocumentChunk"],
+                "chunk_only": self.settings.graphrag.chunk_only,
+                "doc_only": self.settings.graphrag.doc_only,
+                "verbose": True,
+            },
+        }
+        base_url = self.settings.graphrag.api_base.rstrip("/")
+        answerquestion_endpoint = f"{base_url}/{self.settings.graphrag.graph_name}/graphrag/answerquestion"
+        query_endpoint = f"{base_url}/{self.settings.graphrag.graph_name}/query"
+        query_body = {
+            "query": payload.question,
+            "rag_method": "hybrid",
+        }
         try:
-            raw_chunks = self.rag_store.search(payload.question, top_k=top_k)
-        except Exception as exc:
-            raw_chunks = []
-            retrieval_error = str(exc)
-        else:
-            retrieval_error = None
-        retrieval_ms = (time.perf_counter() - retrieval_start) * 1000
-
-        # --- 2. Run cloud GraphRAG ---
-        generation_start = time.perf_counter()
-        try:
-            result = await self._cloud.answer(
-                question=payload.question,
-                chunks=raw_chunks,
-                top_k=top_k,
-            )
-        except Exception as exc:
-            generation_ms = (time.perf_counter() - generation_start) * 1000
-            latency_ms = (time.perf_counter() - started) * 1000
+            timeout = httpx.Timeout(180.0, connect=2.0)
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.post(
+                    answerquestion_endpoint,
+                    json=answerquestion_body,
+                    auth=(self.settings.tigergraph.username, self.settings.tigergraph.password),
+                )
+                if response.status_code >= 500:
+                    fallback_response = await client.post(
+                        query_endpoint,
+                        json=query_body,
+                        auth=(self.settings.tigergraph.username, self.settings.tigergraph.password),
+                    )
+                    fallback_response.raise_for_status()
+                    raw = fallback_response.json()
+                    raw.setdefault(
+                        "_fallback",
+                        {
+                            "from": answerquestion_endpoint,
+                            "to": query_endpoint,
+                            "status_code": response.status_code,
+                        },
+                    )
+                else:
+                    response.raise_for_status()
+                    raw = response.json()
+        except httpx.ConnectError:
             return self._build_unavailable_response(
-                started_ts=started,
-                retrieval_ms=retrieval_ms,
-                generation_ms=generation_ms,
-                latency_ms=latency_ms,
+                started=started,
+                retrieval_start=retrieval_start,
                 top_k=top_k,
                 num_hops=num_hops,
-                message=f"Cloud GraphRAG failed: {exc}",
+                endpoint=answerquestion_endpoint,
+                message=(
+                    "GraphRAG service is not reachable. Start the TigerGraph GraphRAG API "
+                    f"or set GRAPHRAG_API_BASE to the running service. Tried: {answerquestion_endpoint}"
+                ),
             )
-        generation_ms = (time.perf_counter() - generation_start) * 1000
-        latency_ms = (time.perf_counter() - started) * 1000
-
-        # --- 3. Build answer text ---
-        answer = result["answer"]
-        reasoning = result.get("reasoning", "")
-        if reasoning:
-            answer = f"{answer}\n\n---\n**Graph Reasoning:** {reasoning}"
-
-        # --- 4. Build sources from chunks + graph metadata ---
-        sources = self._build_sources(raw_chunks, result)
-
-        prompt_tokens = len(payload.question.split()) + sum(
-            len(c.get("text", "").split()) for c in raw_chunks
-        )
+        except httpx.TimeoutException:
+            return self._build_unavailable_response(
+                started=started,
+                retrieval_start=retrieval_start,
+                top_k=top_k,
+                num_hops=num_hops,
+                endpoint=answerquestion_endpoint,
+                message=f"GraphRAG service timed out after 180 seconds. Tried: {answerquestion_endpoint}",
+            )
+        except httpx.HTTPStatusError as exc:
+            return self._build_unavailable_response(
+                started=started,
+                retrieval_start=retrieval_start,
+                top_k=top_k,
+                num_hops=num_hops,
+                endpoint=answerquestion_endpoint,
+                message=f"GraphRAG service returned HTTP {exc.response.status_code}: {exc.response.text[:500]}",
+            )
+        except httpx.RequestError as exc:
+            return self._build_unavailable_response(
+                started=started,
+                retrieval_start=retrieval_start,
+                top_k=top_k,
+                num_hops=num_hops,
+                endpoint=answerquestion_endpoint,
+                message=f"GraphRAG request failed: {exc}",
+            )
+        retrieval_ms = (time.perf_counter() - retrieval_start) * 1000
+        answer = raw.get("response") or raw.get("natural_language_response", "")
+        sources = self._extract_sources(raw)
+        prompt_tokens = len(payload.question.split())
         completion_tokens = len(answer.split())
+        generation_ms = max((time.perf_counter() - started) * 1000 - retrieval_ms, 0.0)
+        latency_ms = (time.perf_counter() - started) * 1000
         cost = self._estimate_cost(
             prompt_tokens,
             completion_tokens,
             self.settings.providers.llm.pricing.prompt_per_1k,
             self.settings.providers.llm.pricing.completion_per_1k,
         )
-
         return self._build_response(
             answer=answer,
             prompt_tokens=prompt_tokens,
@@ -115,90 +129,35 @@ class GraphRAGPipeline(BasePipeline):
             latency_ms=latency_ms,
             sources=sources,
             retrieval_info=RetrievalInfo(
-                mode="cloud_graph",
+                mode="graph",
                 top_k=top_k,
                 num_hops=num_hops,
                 chunk_strategy=self.settings.graphrag.chunker,
                 graph_name=self.settings.graphrag.graph_name,
                 raw={
-                    "graph_nodes": result.get("graph_nodes", []),
-                    "graph_edges": result.get("graph_edges", []),
-                    "entity_count": len(result.get("entities", [])),
-                    "relationship_count": len(result.get("relationships", [])),
-                    "retrieved_chunks": len(raw_chunks),
-                    "retrieval_error": retrieval_error,
-                    "graph_backend": (
-                        "tigergraph_cloud"
-                        if (self._cloud.tigergraph_url and self._cloud.tigergraph_api_key)
-                        else "networkx_fallback"
-                    ),
+                    "retrieved": raw.get("retrieved", []),
+                    "verbose": raw.get("verbose", {}),
+                    "query_sources": raw.get("query_sources", {}),
+                    "fallback": raw.get("_fallback", {}),
                 },
             ),
             retrieval_ms=retrieval_ms,
             generation_ms=generation_ms,
             estimated_cost=cost,
-            raw=result,
+            raw=raw,
         )
-
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
-
-    def _build_sources(
-        self, raw_chunks: list[dict[str, Any]], result: dict[str, Any]
-    ) -> list[SourceRecord]:
-        sources: list[SourceRecord] = []
-        seen: set[str] = set()
-
-        # Chunks from Chroma
-        for idx, chunk in enumerate(raw_chunks, start=1):
-            chunk_id = str(chunk.get("chunk_id") or chunk.get("id") or f"chunk-{idx}")
-            if chunk_id in seen:
-                continue
-            seen.add(chunk_id)
-            sources.append(
-                SourceRecord(
-                    id=chunk_id,
-                    title=chunk.get("title") or chunk.get("paper_filename") or chunk.get("source"),
-                    snippet=(chunk.get("text") or chunk.get("snippet") or "")[:600],
-                    score=chunk.get("score"),
-                    metadata={
-                        "source": chunk.get("source"),
-                        "paper_filename": chunk.get("paper_filename") or chunk.get("source"),
-                        "page": chunk.get("page"),
-                        "chunk_id": chunk.get("chunk_id"),
-                    },
-                )
-            )
-
-        # Graph nodes as additional "sources" (graph evidence)
-        for node in result.get("graph_nodes", [])[:5]:
-            node_id = f"graph-node-{node.get('id', '')}"
-            if node_id in seen or not node.get("description"):
-                continue
-            seen.add(node_id)
-            sources.append(
-                SourceRecord(
-                    id=node_id,
-                    title=f"Graph Entity: {node.get('id')}",
-                    snippet=node.get("description", ""),
-                    score=None,
-                    metadata={"node_type": node.get("type"), "source": "graph"},
-                )
-            )
-
-        return sources
 
     def _build_unavailable_response(
         self,
-        started_ts: float,
-        retrieval_ms: float,
-        generation_ms: float,
-        latency_ms: float,
+        started: float,
+        retrieval_start: float,
         top_k: int,
         num_hops: int,
+        endpoint: str,
         message: str,
     ):
+        retrieval_ms = (time.perf_counter() - retrieval_start) * 1000
+        latency_ms = (time.perf_counter() - started) * 1000
         return self._build_response(
             answer=message,
             prompt_tokens=len(message.split()),
@@ -206,15 +165,87 @@ class GraphRAGPipeline(BasePipeline):
             latency_ms=latency_ms,
             sources=[],
             retrieval_info=RetrievalInfo(
-                mode="cloud_graph_unavailable",
+                mode="graph_unavailable",
                 top_k=top_k,
                 num_hops=num_hops,
                 chunk_strategy=self.settings.graphrag.chunker,
                 graph_name=self.settings.graphrag.graph_name,
-                raw={"error": message},
+                raw={"endpoint": endpoint, "error": message},
             ),
             retrieval_ms=retrieval_ms,
-            generation_ms=generation_ms,
+            generation_ms=0.0,
             estimated_cost=0.0,
-            raw={"status": "unavailable", "error": message},
+            raw={"status": "unavailable", "endpoint": endpoint, "error": message},
         )
+
+    def _extract_sources(self, raw: dict[str, Any]) -> list[SourceRecord]:
+        sources: list[SourceRecord] = []
+
+        for idx, item in enumerate(raw.get("retrieved", []) or [], start=1):
+            candidate_answer = item.get("candidate_answer", "")
+            if not candidate_answer:
+                continue
+            sources.append(
+                SourceRecord(
+                    id=f"retrieved-{idx}",
+                    title="GraphRAG Candidate",
+                    snippet=candidate_answer.strip(),
+                    score=item.get("score"),
+                    metadata=item,
+                )
+            )
+
+        verbose = raw.get("verbose", {}) or {}
+        final_retrieval = verbose.get("final_retrieval", {}) if isinstance(verbose, dict) else {}
+        for vertex_id, snippets in final_retrieval.items():
+            text_snippets = [snippet for snippet in snippets if snippet]
+            if not text_snippets:
+                continue
+            sources.append(
+                SourceRecord(
+                    id=str(vertex_id),
+                    title=str(vertex_id),
+                    snippet="\n\n".join(text_snippets).strip(),
+                    score=None,
+                    metadata={"vertex_id": vertex_id, "snippets": snippets},
+                )
+            )
+
+        query_sources = raw.get("query_sources", {})
+        if isinstance(query_sources, dict):
+            for source_id, source_value in query_sources.items():
+                snippet = ""
+                metadata: dict[str, Any] = {"source_id": source_id}
+                if isinstance(source_value, str):
+                    snippet = source_value
+                elif isinstance(source_value, dict):
+                    snippet = str(
+                        source_value.get("candidate_answer")
+                        or source_value.get("text")
+                        or source_value.get("content")
+                        or ""
+                    )
+                    metadata.update(source_value)
+                elif isinstance(source_value, list):
+                    snippet = "\n\n".join(str(item) for item in source_value if item)
+                    metadata["items"] = source_value
+                if not snippet.strip():
+                    continue
+                sources.append(
+                    SourceRecord(
+                        id=f"query-{source_id}",
+                        title=str(source_id),
+                        snippet=snippet.strip(),
+                        score=None,
+                        metadata=metadata,
+                    )
+                )
+
+        deduped: list[SourceRecord] = []
+        seen: set[str] = set()
+        for source in sources:
+            if source.id in seen:
+                continue
+            seen.add(source.id)
+            deduped.append(source)
+        return deduped

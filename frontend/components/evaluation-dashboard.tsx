@@ -19,6 +19,13 @@ type SortKey = "weighted" | "latency" | "tokenReduction" | "bertscore" | "judgeC
 type DataSource = "active" | "offline";
 
 const PIPELINE_ORDER = ["llm-only", "basic-rag", "graphrag"] as const;
+const HOSTED_PRICING = {
+  model: "Qwen 2.5 7B",
+  inputPerMillion: 0.04,
+  outputPerMillion: 0.1,
+  sourceLabel: "ComputePrices",
+  sourceUrl: "https://computeprices.com/models/qwen-2-5-7b",
+};
 
 export function EvaluationDashboard() {
   const [payload, setPayload] = useState<EvaluationDashboardResponse | null>(null);
@@ -81,6 +88,7 @@ export function EvaluationDashboard() {
   const chartRows = useMemo(() => buildChartRows(summaries), [summaries]);
   const reportPreview = payload?.report.markdown ? payload.report.markdown.split("\n").slice(0, 18).join("\n") : null;
   const artifactCards = buildArtifactCards(payload?.bertscore, payload?.judge, payload?.report);
+  const submissionSnapshot = useMemo(() => buildSubmissionSnapshot(summaries), [summaries]);
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
@@ -137,6 +145,40 @@ export function EvaluationDashboard() {
         {!loading && !error && payload ? (
           <>
             <section className="grid gap-6 xl:grid-cols-[1.15fr,0.85fr]">
+              <SectionCard title="Submission snapshot" description="Headline numbers for the hackathon form, including hosted-API-equivalent cost estimates from the completed benchmark run.">
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  <SnapshotCard
+                    label="GraphRAG vs Basic RAG"
+                    value={formatPercent(submissionSnapshot.graphRagTokenReductionVsBasic)}
+                    detail="Average total-token reduction"
+                  />
+                  <SnapshotCard
+                    label="Cost reduction"
+                    value={formatPercent(submissionSnapshot.graphRagCostReductionVsBasic)}
+                    detail="Estimated hosted API cost/query reduction"
+                  />
+                  <SnapshotCard
+                    label="Best BERTScore"
+                    value={submissionSnapshot.bestBertscoreLabel}
+                    detail="Highest raw BERTScore F1"
+                  />
+                  <SnapshotCard
+                    label="Top judge pass"
+                    value={submissionSnapshot.bestJudgeLabel}
+                    detail="Best LLM-as-a-Judge pass rate"
+                  />
+                </div>
+                <div className="mt-5 rounded-[1.4rem] border border-white/10 bg-slate-950/60 p-4 text-sm leading-7 text-slate-300">
+                  Hosted cost estimates use <span className="font-semibold text-white">{HOSTED_PRICING.model}</span> pricing at{" "}
+                  <span className="font-semibold text-white">${HOSTED_PRICING.inputPerMillion.toFixed(3)} / 1M input</span> and{" "}
+                  <span className="font-semibold text-white">${HOSTED_PRICING.outputPerMillion.toFixed(3)} / 1M output</span> tokens, based on{" "}
+                  <a className="text-amber-200 underline decoration-amber-300/40 underline-offset-4" href={HOSTED_PRICING.sourceUrl} target="_blank" rel="noreferrer">
+                    {HOSTED_PRICING.sourceLabel}
+                  </a>
+                  . These are reporting estimates, not actual local Ollama billing.
+                </div>
+              </SectionCard>
+
               <SectionCard title="Evaluation snapshot" description="Choose between the latest live query evaluation and the saved offline benchmark outputs.">
                 <div className="mb-5 flex flex-wrap items-center gap-3">
                   <ToggleButton
@@ -194,6 +236,7 @@ export function EvaluationDashboard() {
               <SectionCard title="Pipeline signals" description="Quick visual comparison of token, latency, and accuracy behavior.">
                 <div className="space-y-6">
                   <MetricChart title="Average total tokens" data={chartRows} dataKey="avg_total_tokens" color="#f59e0b" />
+                  <MetricChart title="Estimated API cost / query" data={chartRows} dataKey="estimated_cost_per_query_usd" color="#fb7185" />
                   <MetricChart title="Average latency" data={chartRows} dataKey="avg_total_latency_ms" color="#14b8a6" />
                   <MetricChart title="Rescaled BERTScore F1" data={chartRows} dataKey="avg_bertscore_rescaled_f1" color="#60a5fa" />
                   <MetricChart title="Judge correctness %" data={chartRows} dataKey="avg_judge_correctness_pct" color="#f97316" />
@@ -272,6 +315,7 @@ function buildChartRows(summaries: Array<PipelineSummary & { pipeline: string }>
     )
     .map((summary) => ({
       name: summary.pipeline,
+      estimated_cost_per_query_usd: estimateHostedCost(summary),
       avg_total_tokens: summary.avg_total_tokens ?? 0,
       avg_total_latency_ms: summary.avg_total_latency_ms ?? 0,
       avg_bertscore_rescaled_f1: summary.avg_bertscore_rescaled_f1 ?? 0,
@@ -340,6 +384,38 @@ function leaderboardSortValue(row: EvaluationLeaderboardRow, sortKey: SortKey): 
   return row.hackathon_weighted_score ?? 0;
 }
 
+function estimateHostedCost(summary: PipelineSummary) {
+  const promptTokens = summary.avg_prompt_tokens ?? 0;
+  const outputTokens = summary.avg_output_tokens ?? 0;
+  return (promptTokens / 1_000_000) * HOSTED_PRICING.inputPerMillion + (outputTokens / 1_000_000) * HOSTED_PRICING.outputPerMillion;
+}
+
+function buildSubmissionSnapshot(summaries: Array<PipelineSummary & { pipeline: string }>) {
+  const graphrag = summaries.find((summary) => summary.pipeline === "graphrag");
+  const basicRag = summaries.find((summary) => summary.pipeline === "basic-rag");
+  const bestBertscore = summaries.reduce<PipelineSummary & { pipeline: string } | null>((best, summary) => {
+    if (!best) return summary;
+    return (summary.avg_bertscore_raw_f1 ?? 0) > (best.avg_bertscore_raw_f1 ?? 0) ? summary : best;
+  }, null);
+  const bestJudge = summaries.reduce<PipelineSummary & { pipeline: string } | null>((best, summary) => {
+    if (!best) return summary;
+    return (summary.judge_pass_rate ?? 0) > (best.judge_pass_rate ?? 0) ? summary : best;
+  }, null);
+
+  const graphRagCost = graphrag ? estimateHostedCost(graphrag) : 0;
+  const basicRagCost = basicRag ? estimateHostedCost(basicRag) : 0;
+  const costReduction = basicRagCost > 0 ? ((basicRagCost - graphRagCost) / basicRagCost) * 100 : 0;
+
+  return {
+    graphRagTokenReductionVsBasic: graphrag?.hackathon_token_reduction_score ?? 0,
+    graphRagCostReductionVsBasic: costReduction,
+    bestBertscoreLabel: bestBertscore
+      ? `${bestBertscore.pipeline} · ${(bestBertscore.avg_bertscore_raw_f1 ?? 0).toFixed(3)}`
+      : "n/a",
+    bestJudgeLabel: bestJudge ? `${bestJudge.pipeline} · ${formatPercent((bestJudge.judge_pass_rate ?? 0) * 100)}` : "n/a",
+  };
+}
+
 function formatNumber(value?: number) {
   return (value ?? 0).toFixed(3);
 }
@@ -354,6 +430,10 @@ function formatPercent(value?: number) {
 
 function formatTokens(value?: number) {
   return `${Math.round(value ?? 0)} tok`;
+}
+
+function formatCurrency(value?: number) {
+  return `$${(value ?? 0).toFixed(6)}`;
 }
 
 function average(values: number[]) {
@@ -462,6 +542,8 @@ function LeaderboardTable({ rows, highlightedPipeline }: { rows: EvaluationLeade
             <th className="px-4 py-3">Rescaled F1</th>
             <th className="px-4 py-3">Judge %</th>
             <th className="px-4 py-3">Judge pass</th>
+            <th className="px-4 py-3">Cost / query</th>
+            <th className="px-4 py-3">Token Δ</th>
             <th className="px-4 py-3">Latency</th>
           </tr>
         </thead>
@@ -482,6 +564,8 @@ function LeaderboardTable({ rows, highlightedPipeline }: { rows: EvaluationLeade
                 <td className="px-4 py-4 text-slate-200">{formatNumber(row.avg_bertscore_rescaled_f1)}</td>
                 <td className="px-4 py-4 text-slate-200">{formatPercent(row.avg_judge_correctness_pct)}</td>
                 <td className="px-4 py-4 text-slate-200">{formatPercent((row.judge_pass_rate ?? 0) * 100)}</td>
+                <td className="px-4 py-4 text-slate-200">{formatCurrency(estimateHostedCost(row))}</td>
+                <td className="px-4 py-4 text-slate-200">{formatPercent(row.avg_token_reduction_pct_vs_llm_only)}</td>
                 <td className="px-4 py-4 text-slate-200">{formatLatency(row.avg_total_latency_ms)}</td>
               </tr>
             );
@@ -595,6 +679,7 @@ function PipelineAnswerCard({ record }: { record: BenchmarkRecord }) {
       <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-300">
         <MiniMetric label="Raw F1" value={formatNumber(record.bertscore_raw_f1)} />
         <MiniMetric label="Token Δ" value={formatPercent(record.token_reduction_pct_vs_llm_only)} />
+        <MiniMetric label="Est. cost" value={formatCurrency(estimateRecordHostedCost(record))} />
         <MiniMetric label="Citations" value={formatPercent(record.citation_correctness * 100)} />
         <MiniMetric label="Mismatch" value={formatPercent(record.answer_context_mismatch * 100)} />
       </div>
@@ -617,6 +702,10 @@ function PipelineAnswerCard({ record }: { record: BenchmarkRecord }) {
       ) : null}
     </article>
   );
+}
+
+function estimateRecordHostedCost(record: BenchmarkRecord) {
+  return (record.prompt_tokens / 1_000_000) * HOSTED_PRICING.inputPerMillion + (record.output_tokens / 1_000_000) * HOSTED_PRICING.outputPerMillion;
 }
 
 function MiniMetric({ label, value }: { label: string; value: string }) {

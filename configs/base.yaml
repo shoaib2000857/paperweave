@@ -20,10 +20,10 @@ paths:
 
 providers:
   llm:
-    provider: ollama
-    model: llama3.1:8b
-    base_url: http://localhost:11434
-    api_key_env: LLM_API_KEY
+    provider: gemini
+    model: gemini-2.0-flash
+    base_url: https://generativelanguage.googleapis.com
+    api_key_env: GEMINI_API_KEY
     temperature: 0.1
     max_tokens: 512
     timeout_seconds: 300
@@ -36,10 +36,10 @@ providers:
     base_url: http://localhost:11434
     dimensions: 768
   judge:
-    provider: huggingface
-    model: meta-llama/Llama-3.1-8B-Instruct
-    base_url:
-    api_key_env: JUDGE_API_KEY
+    provider: gemini
+    model: gemini-2.0-flash
+    base_url: https://generativelanguage.googleapis.com
+    api_key_env: GEMINI_API_KEY
     timeout_seconds: 300
 
 dataset:

@@ -29,6 +29,9 @@
     }
   },
   "llm_config": {
+    "authentication_configuration": {
+      "GOOGLE_API_KEY": "YOUR_GOOGLE_API_KEY_HERE"
+    },
     "embedding_service": {
       "embedding_model_service": "ollama",
       "base_url": "http://host.docker.internal:11434",
@@ -37,13 +40,12 @@
       "authentication_configuration": {}
     },
     "completion_service": {
-      "llm_service": "ollama",
-      "base_url": "http://host.docker.internal:11434",
-      "llm_model": "llama3.1:8b",
+      "llm_service": "genai",
+      "llm_model": "gemini-2.0-flash",
       "model_kwargs": {
         "temperature": 0.1
       },
-      "prompt_path": "./common/prompts/openai_gpt4/"
+      "prompt_path": "./common/prompts/google_gemini/"
     }
   }
 }

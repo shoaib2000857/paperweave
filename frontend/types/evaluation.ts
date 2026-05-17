@@ -51,6 +51,8 @@ export type PipelineSummary = {
   pipeline: string;
   count?: number;
   failures?: number;
+  avg_prompt_tokens?: number;
+  avg_output_tokens?: number;
   avg_total_tokens?: number;
   avg_token_reduction_pct_vs_llm_only?: number;
   avg_total_latency_ms?: number;

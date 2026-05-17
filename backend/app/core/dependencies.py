@@ -54,7 +54,7 @@ def build_container() -> Container:
         rag_store=rag_store,
         dataset_store=dataset_store,
     )
-    graphrag_pipeline = GraphRAGPipeline(settings=settings, llm_client=llm_client, rag_store=rag_store)
+    graphrag_pipeline = GraphRAGPipeline(settings=settings, llm_client=llm_client)
     benchmark_store = BenchmarkStore(settings)
     benchmark_service = BenchmarkService(
         settings=settings,

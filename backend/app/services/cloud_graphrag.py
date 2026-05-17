@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import httpx
 import networkx as nx
@@ -29,6 +29,9 @@ import networkx as nx
 logger = logging.getLogger(__name__)
 
 _GEMINI_BASE = "https://generativelanguage.googleapis.com"
+
+if TYPE_CHECKING:
+    from app.core.config import Settings
 
 
 class CloudGraphRAGService:
@@ -428,12 +431,14 @@ class CloudGraphRAGService:
             return data["candidates"][0]["content"]["parts"][0]["text"]
 
 
-def build_cloud_graphrag_service(graph_name: str = "PaperWeave") -> CloudGraphRAGService:
-    """Factory — reads credentials from environment variables."""
-    gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY", "")
+def build_cloud_graphrag_service(settings: "Settings", graph_name: str = "PaperWeave") -> CloudGraphRAGService:
+    """Factory — prefers app settings for Gemini and env vars for TigerGraph cloud connectivity."""
+    llm_config = settings.providers.llm
+    llm_api_env = llm_config.api_key_env or "GEMINI_API_KEY"
+    gemini_key = os.getenv(llm_api_env, "") or os.getenv("GEMINI_API_KEY", "") or os.getenv("GOOGLE_API_KEY", "")
     tg_url = os.getenv("TIGERGRAPH_URL", "").strip() or None
     tg_api_key = os.getenv("TIGERGRAPH_API_KEY", "").strip() or None
-    model = os.getenv("GRAPHRAG_GEMINI_MODEL", "gemini-2.0-flash")
+    model = os.getenv("GRAPHRAG_GEMINI_MODEL", llm_config.model)
     return CloudGraphRAGService(
         gemini_api_key=gemini_key,
         tigergraph_url=tg_url,

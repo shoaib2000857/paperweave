@@ -1,0 +1,102 @@
+[
+  {
+    "id": "favor-001",
+    "question": "What is the distributional gap between real and simulated user behaviors in paper 2605.07847v1?",
+    "ground_truth": "The paper defines the distributional gap as the difference between the distribution of real user behaviors and the distribution of simulated user behaviors. It measures this gap by extracting behavior representations from conversations, clustering them into discrete behavior modes, and computing divergence metrics between the resulting distributions.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-002",
+    "question": "What are the main contributions claimed by paper 2605.07847v1?",
+    "ground_truth": "The paper claims four main contributions: it introduces a method for measuring the distributional gap between real and simulated user behaviors, systematically evaluates 24 LLM-based user simulators on coding and writing tasks, shows that combining behaviorally complementary simulators can reduce the gap to real users, and uses TF-IDF analysis of behavior clusters to surface interpretable patterns that simulators capture, miss, or hallucinate.",
+    "category": "summarization",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-003",
+    "question": "How does paper 2605.07847v1 represent and compare user behaviors?",
+    "ground_truth": "It represents each conversation by using an LLM to describe user behavior along several behavioral facets, embeds those descriptions into a shared semantic space, clusters the embeddings into discrete behavior modes, and then compares real and simulated users by computing divergence-based metrics over the resulting distributions.",
+    "category": "multi_hop_reasoning",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-004",
+    "question": "What kinds of simulators and tasks are evaluated in paper 2605.07847v1?",
+    "ground_truth": "The paper evaluates 24 LLM-based user simulators, including both closed-source and open-source models as well as trained simulators. It studies them on coding and writing tasks.",
+    "category": "lookup",
+    "difficulty": "easy",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-005",
+    "question": "What does paper 2605.07847v1 say about similarities among simulator families?",
+    "ground_truth": "It reports that many simulators behave similarly to one another and that simulators from the same family tend to be the most similar. About 30 percent of pairwise comparisons have Jensen-Shannon divergence below 0.10.",
+    "category": "comparison",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-006",
+    "question": "What does the linear classification experiment in paper 2605.07847v1 show?",
+    "ground_truth": "The linear classification experiment shows that the user behavior representation embeddings capture meaningful differences between real and simulated users. Logistic regression classifiers achieve high accuracies, roughly from about 90.9 percent to 99.6 percent, and those accuracies correlate strongly with the paper's distributional metrics.",
+    "category": "lookup",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-007",
+    "question": "How can combining simulators help according to paper 2605.07847v1?",
+    "ground_truth": "The paper argues that combining behaviorally complementary simulators can bring the resulting simulated behavior distribution closer to real users than either simulator alone.",
+    "category": "comparison",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-008",
+    "question": "Why is measuring the distributional gap important according to paper 2605.07847v1?",
+    "ground_truth": "Measuring the distributional gap matters because user simulators may miss behaviors that real users exhibit or generate behaviors that real users rarely show. Those failures can bias training and evaluation and lead assistants that generalize poorly to the diversity of real users.",
+    "category": "multi_hop_reasoning",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-009",
+    "question": "What evidence does paper 2605.07847v1 provide that some simulators are closer to real users than others?",
+    "ground_truth": "The paper shows through divergence-based metrics and visualization of clustered behavior distributions that the gap to real users varies across simulators. For example, the provided discussion notes that Gemini 3.1 Pro overlaps more closely with real users than Llama-3.1-8B-Instruct on the coding task.",
+    "category": "comparison",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  },
+  {
+    "id": "favor-010",
+    "question": "What clustering choice does paper 2605.07847v1 use and how robust is it to alternatives?",
+    "ground_truth": "The paper uses k-means clustering, with a reported setting of k equal to 500, to convert embeddings into discrete behavior distributions. It also tests alternatives such as Gaussian Mixture Models and Agglomerative Clustering and reports that simulator rankings remain highly consistent across clustering choices.",
+    "category": "lookup",
+    "difficulty": "medium",
+    "sources": [
+      "2605.07847v1"
+    ]
+  }
+]

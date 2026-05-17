@@ -26,6 +26,32 @@ Pipeline runs: 30
 | graphrag | 10 | 0 | 113.200 | 51410.761 | 89077.690 |
 | llm-only | 10 | 0 | 257.000 | 4940.851 | 11164.869 |
 
+## Hosted API Cost Estimates
+
+Estimated using current hosted Qwen 2.5 7B pricing of `$0.040 / 1M input tokens` and `$0.100 / 1M output tokens`.
+
+Source pricing reference:
+
+- ComputePrices Qwen 2.5 7B: https://computeprices.com/models/qwen-2-5-7b
+
+Approximate per-query generation cost:
+
+| pipeline | avg_prompt_tokens | avg_output_tokens | estimated_cost_per_query_usd |
+| --- | --- | --- | --- |
+| llm-only | 40.8 | 216.2 | $0.000023 |
+| basic-rag | 941.8 | 217.5 | $0.000059 |
+| graphrag | 11.3 | 101.9 | $0.000011 |
+
+Derived headline:
+
+- GraphRAG token reduction vs Basic RAG: `90.24%`
+- GraphRAG estimated API cost reduction vs Basic RAG: `82.09%`
+
+Notes:
+
+- These are hosted-API-equivalent estimates for submission reporting, not actual billed local-Ollama costs.
+- Embedding costs are excluded because this benchmark run used local Ollama embeddings and the submission metric is dominated by answer-generation token spend.
+
 ## Bonus Checks
 
 ### BERTScore Setup

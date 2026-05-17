@@ -1,0 +1,187 @@
+{
+  "records": [
+    {
+      "question_id": "local-arxiv-001",
+      "pipeline": "llm-only",
+      "precision": 0.49588724970817566,
+      "recall": 0.5407811403274536,
+      "raw_f1": 0.517362117767334,
+      "rescaled_precision": -0.04350995272397995,
+      "rescaled_recall": 0.04917960241436958,
+      "rescaled_f1": 0.004830993711948395
+    },
+    {
+      "question_id": "local-arxiv-001",
+      "pipeline": "basic-rag",
+      "precision": 0.4136080741882324,
+      "recall": 0.45423731207847595,
+      "raw_f1": 0.43297162652015686,
+      "rescaled_precision": -0.21382728219032288,
+      "rescaled_recall": -0.13001085817813873,
+      "rescaled_f1": -0.16917690634727478
+    },
+    {
+      "question_id": "local-arxiv-001",
+      "pipeline": "graphrag",
+      "precision": 0.4388251304626465,
+      "recall": 0.3614656925201416,
+      "raw_f1": 0.3964064419269562,
+      "rescaled_precision": -0.1616281419992447,
+      "rescaled_recall": -0.322096049785614,
+      "rescaled_f1": -0.2445720136165619
+    },
+    {
+      "question_id": "local-arxiv-002",
+      "pipeline": "llm-only",
+      "precision": 0.5128178596496582,
+      "recall": 0.508249819278717,
+      "raw_f1": 0.5105236172676086,
+      "rescaled_precision": -0.008463704027235508,
+      "rescaled_recall": -0.01817704550921917,
+      "rescaled_f1": -0.009269564412534237
+    },
+    {
+      "question_id": "local-arxiv-002",
+      "pipeline": "basic-rag",
+      "precision": 0.47020161151885986,
+      "recall": 0.45232826471328735,
+      "raw_f1": 0.4610917866230011,
+      "rescaled_precision": -0.09667904675006866,
+      "rescaled_recall": -0.13396356999874115,
+      "rescaled_f1": -0.11119489371776581
+    },
+    {
+      "question_id": "local-arxiv-002",
+      "pipeline": "graphrag",
+      "precision": 0.4416467547416687,
+      "recall": 0.33354097604751587,
+      "raw_f1": 0.3800557851791382,
+      "rescaled_precision": -0.1557874083518982,
+      "rescaled_recall": -0.37991464138031006,
+      "rescaled_f1": -0.27828603982925415
+    },
+    {
+      "question_id": "local-arxiv-003",
+      "pipeline": "llm-only",
+      "precision": 0.5187466740608215,
+      "recall": 0.5241983532905579,
+      "raw_f1": 0.5214582681655884,
+      "rescaled_precision": 0.0038089011795818806,
+      "rescaled_recall": 0.014844663441181183,
+      "rescaled_f1": 0.01327699888497591
+    },
+    {
+      "question_id": "local-arxiv-003",
+      "pipeline": "basic-rag",
+      "precision": 0.4761793613433838,
+      "recall": 0.4809781610965729,
+      "raw_f1": 0.4785667657852173,
+      "rescaled_precision": -0.08430514484643936,
+      "rescaled_recall": -0.07464347034692764,
+      "rescaled_f1": -0.07516258209943771
+    },
+    {
+      "question_id": "local-arxiv-003",
+      "pipeline": "graphrag",
+      "precision": 0.4443955421447754,
+      "recall": 0.3576660454273224,
+      "raw_f1": 0.3963416516780853,
+      "rescaled_precision": -0.15009742975234985,
+      "rescaled_recall": -0.3299632966518402,
+      "rescaled_f1": -0.24470560252666473
+    },
+    {
+      "question_id": "local-arxiv-004",
+      "pipeline": "llm-only",
+      "precision": 0.44106802344322205,
+      "recall": 0.4757015109062195,
+      "raw_f1": 0.45773059129714966,
+      "rescaled_precision": -0.15698537230491638,
+      "rescaled_recall": -0.085568867623806,
+      "rescaled_f1": -0.11812546849250793
+    },
+    {
+      "question_id": "local-arxiv-004",
+      "pipeline": "basic-rag",
+      "precision": 0.4456814229488373,
+      "recall": 0.47795194387435913,
+      "raw_f1": 0.46125295758247375,
+      "rescaled_precision": -0.14743566513061523,
+      "rescaled_recall": -0.08090930432081223,
+      "rescaled_f1": -0.11086256802082062
+    },
+    {
+      "question_id": "local-arxiv-004",
+      "pipeline": "graphrag",
+      "precision": 0.4644382894039154,
+      "recall": 0.3655538558959961,
+      "raw_f1": 0.4091055691242218,
+      "rescaled_precision": -0.10860908776521683,
+      "rescaled_recall": -0.31363144516944885,
+      "rescaled_f1": -0.21838721632957458
+    },
+    {
+      "question_id": "local-arxiv-005",
+      "pipeline": "llm-only",
+      "precision": 0.48506060242652893,
+      "recall": 0.49501338601112366,
+      "raw_f1": 0.48998644948005676,
+      "rescaled_precision": -0.06592103838920593,
+      "rescaled_recall": -0.04558330401778221,
+      "rescaled_f1": -0.051615916192531586
+    },
+    {
+      "question_id": "local-arxiv-005",
+      "pipeline": "basic-rag",
+      "precision": 0.4559131860733032,
+      "recall": 0.4779931902885437,
+      "raw_f1": 0.466692179441452,
+      "rescaled_precision": -0.12625598907470703,
+      "rescaled_recall": -0.08082390576601028,
+      "rescaled_f1": -0.09964723885059357
+    },
+    {
+      "question_id": "local-arxiv-005",
+      "pipeline": "graphrag",
+      "precision": 0.4379445016384125,
+      "recall": 0.34742119908332825,
+      "raw_f1": 0.38746586441993713,
+      "rescaled_precision": -0.16345104575157166,
+      "rescaled_recall": -0.3511754274368286,
+      "rescaled_f1": -0.26300692558288574
+    }
+  ],
+  "summary": {
+    "basic-rag": {
+      "avg_precision": 0.4523167312145233,
+      "avg_recall": 0.4686977744102478,
+      "avg_raw_f1": 0.4601150631904602,
+      "avg_rescaled_f1": -0.1132088378071785,
+      "raw_f1_bonus_pass": false,
+      "rescaled_f1_bonus_pass": false,
+      "bonus_pass": false
+    },
+    "graphrag": {
+      "avg_precision": 0.44545004367828367,
+      "avg_recall": 0.35312955379486083,
+      "avg_raw_f1": 0.3938750624656677,
+      "avg_rescaled_f1": -0.24979155957698823,
+      "raw_f1_bonus_pass": false,
+      "rescaled_f1_bonus_pass": false,
+      "bonus_pass": false
+    },
+    "llm-only": {
+      "avg_precision": 0.4907160818576813,
+      "avg_recall": 0.5087888419628144,
+      "avg_raw_f1": 0.4994122087955475,
+      "avg_rescaled_f1": -0.03218059130012989,
+      "raw_f1_bonus_pass": false,
+      "rescaled_f1_bonus_pass": false,
+      "bonus_pass": false
+    }
+  },
+  "model_type": "microsoft/deberta-xlarge-mnli",
+  "backend": "evaluate",
+  "device": "cpu",
+  "rescale_with_baseline": true
+}

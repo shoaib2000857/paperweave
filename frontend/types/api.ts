@@ -119,4 +119,5 @@ export type AskAllResponse = {
   llm_only?: AskResponse;
   basic_rag?: AskResponse;
   graphrag?: AskResponse;
+  errors?: Record<string, string>;
 };

@@ -136,6 +136,7 @@ class AskAllResponse(BaseModel):
     llm_only: AskResponse | None = None
     basic_rag: AskResponse | None = None
     graphrag: AskResponse | None = None
+    errors: dict[str, str] = Field(default_factory=dict)
 
 
 class BenchmarkQuestion(BaseModel):

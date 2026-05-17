@@ -24,6 +24,7 @@ def _repo_root() -> Path:
 
 def _output_dir() -> Path:
     for candidate in (
+        _repo_root() / "evaluation" / "outputs" / "hackathon_favor10",
         _repo_root() / "evaluation" / "outputs" / "smoke",
         _repo_root() / "evaluation" / "outputs",
         _repo_root() / "benchmarks",
@@ -35,6 +36,7 @@ def _output_dir() -> Path:
 
 def _report_dir() -> Path:
     for candidate in (
+        _repo_root() / "evaluation" / "reports" / "hackathon_favor10",
         _repo_root() / "evaluation" / "reports" / "smoke",
         _repo_root() / "evaluation" / "reports",
     ):
